@@ -29,7 +29,7 @@ Pengguna dapat melakukan *reservasi* tempat untuk baca buku secara *offline*. Pe
 #### iv. Sumber Dataset Katalog Buku <br>
 	https://www.kaggle.com/datasets/saurabhbagchi/books-dataset <br>
 
-#### *Role* atau peran pengguna beserta deskripsinya (karena bisa saja lebih dari satu jenis pengguna yang mengakses aplikasi) <br>
+* *Role* atau peran pengguna beserta deskripsinya (karena bisa saja lebih dari satu jenis pengguna yang mengakses aplikasi) <br>
 
 	- Pengguna tidak *login* <br>
 	Pengguna yang hanya mengunjungi website LiteraHub tanpa melakukan registrasi akun. Pengguna ini memiliki akses: <br>
