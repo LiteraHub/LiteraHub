@@ -29,16 +29,16 @@ iv. Sumber Dataset Katalog Buku <br>
 
 * *Role* atau peran pengguna beserta deskripsinya (karena bisa saja lebih dari satu jenis pengguna yang mengakses aplikasi) <br>
 
-- Pengguna tidak *login* <br>
-Pengguna yang hanya mengunjungi website LiteraHub tanpa melakukan registrasi akun. Pengguna ini memiliki akses: <br>
-	* Dapat mengakses daftar buku
-	* Dapat melihat rekomendasi buku
+	- Pengguna tidak *login* <br>
+	Pengguna yang hanya mengunjungi website LiteraHub tanpa melakukan registrasi akun. Pengguna ini memiliki akses: <br>
+		* Dapat mengakses daftar buku
+		* Dapat melihat rekomendasi buku
 
-- Pengguna *login* <br>
-Pengguna yang telah melakukan registrasi dan memiliki akun LiteraHub. Pengguna ini memiliki akses: <br>
-	* Dapat mengakses daftar buku
-	* Dapat melihat rekomendasi buku
-	* Dapat berdiskusi di forum
-	* Dapat reservasi kunjungan LiteraHub
-	* Dapat menambahkan karyanya ke dalam LiteraHub
-	* Dapat *checkout*/pinjam buku
+	- Pengguna *login* <br>
+	Pengguna yang telah melakukan registrasi dan memiliki akun LiteraHub. Pengguna ini memiliki akses: <br>
+		* Dapat mengakses daftar buku
+		* Dapat melihat rekomendasi buku
+		* Dapat berdiskusi di forum
+		* Dapat reservasi kunjungan LiteraHub
+		* Dapat menambahkan karyanya ke dalam LiteraHub
+		* Dapat *checkout*/pinjam buku
