@@ -10,8 +10,7 @@ LiteraHub adalah sebuah website perpustakaan yang dirancang supaya pengguna dapa
 
 iii. Daftar modul yang akan diimplementasikan <br>
 1. Modul LembarAsa <br>
-Pengguna yang sudah login bisa menambahkan karyanya ke dalam web LiteraHub. Ketika ingin menambahkan karya, akan ada pop up untuk mengisi *form* yang meminta *input* judul buku, penulis, dll. Disamping itu, akan ada tampilan buku-buku yang diambil dari *dataset* dan karya pengguna (jika ditambahkan). <br>
-<br>
+Pengguna yang sudah login bisa menambahkan karyanya ke dalam web LiteraHub. Ketika ingin menambahkan karya, akan ada pop up untuk mengisi *form* yang meminta *input* judul buku, penulis, dll. Disamping itu, akan ada tampilan buku-buku yang diambil dari *dataset* dan karya pengguna (jika ditambahkan). 
 
 2. Modul Forum <br>
 Pengguna dapat mengisi obrolan dengan pengguna lainnya untuk saling memberi rekomendasi buku yang bagus ataupun hanya untuk sekadar berdiskusi. *Form* pada modul ini akan meminta *input* teks dan pengguna dapat menambahkan buku serta detailnya saat membuat pesan obrolan. <br>
