@@ -1,9 +1,9 @@
 i. Anggota kelompok: <br>
-Jeslyn Theodora - 2206082026 <br>
-Puti Raissa - 2206830391 <br> 
-Muhammad Rafli Mahesa - 2206828140 <br>
-Mohammad Fauzan Aditya - 2206827831 <br>
-Rena Martha Ulima - 2206818783 <br>
+1. Jeslyn Theodora - 2206082026 <br>
+2. Puti Raissa - 2206830391 <br> 
+3. Muhammad Rafli Mahesa - 2206828140 <br>
+4. Mohammad Fauzan Aditya - 2206827831 <br>
+5. Rena Martha Ulima - 2206818783 <br>
 
 ii. Cerita aplikasi yang diajukan serta manfaatnya <br>
 LiteraHub adalah sebuah website perpustakaan yang dirancang supaya pengguna dapat mencari dan meminjam buku, berdiskusi dengan anggota perpustakaan lain dalam forum, serta melakukan reservasi tempat untuk membaca. LiteraHub terdiri dari berbagai fitur, yaitu fitur Product, Forum, Daftar Buku, Pinjam Buku, dan Reservasi LiteraHub. Adapun manfaat LiteraHub, yaitu untuk memudahkan pengguna dalam mencari ketersediaan buku tanpa perlu datang ke perpustakaan secara langsung dan pengguna juga dapat berdiskusi mengenai topik bacaan sesuai dengan minatnya pada forum yang disediakan oleh LiteraHub. Pengguna yang memiliki karya tulis juga dapat mempublikasikan karyanya di LiteraHub. Selain itu, LiteraHub juga membantu pengguna untuk melihat ketersediaan tempat baca dan melakukan reservasi tempat baca di perpustakaan.  <br>
@@ -29,16 +29,16 @@ iv. Sumber Dataset Katalog Buku <br>
 
 * *Role* atau peran pengguna beserta deskripsinya (karena bisa saja lebih dari satu jenis pengguna yang mengakses aplikasi) <br>
 
-* Pengguna tidak *login* <br>
+- Pengguna tidak *login* <br>
 Pengguna yang hanya mengunjungi website LiteraHub tanpa melakukan registrasi akun. Pengguna ini memiliki akses: <br>
-* Dapat mengakses daftar buku
-* Dapat melihat rekomendasi buku
+	* Dapat mengakses daftar buku
+	* Dapat melihat rekomendasi buku
 
-* Pengguna *login* <br>
+- Pengguna *login* <br>
 Pengguna yang telah melakukan registrasi dan memiliki akun LiteraHub. Pengguna ini memiliki akses: <br>
-* Dapat mengakses daftar buku
-* Dapat melihat rekomendasi buku
-* Dapat berdiskusi di forum
-* Dapat reservasi kunjungan LiteraHub
-* Dapat menambahkan karyanya ke dalam LiteraHub
-* Dapat *checkout*/pinjam buku
+	* Dapat mengakses daftar buku
+	* Dapat melihat rekomendasi buku
+	* Dapat berdiskusi di forum
+	* Dapat reservasi kunjungan LiteraHub
+	* Dapat menambahkan karyanya ke dalam LiteraHub
+	* Dapat *checkout*/pinjam buku
