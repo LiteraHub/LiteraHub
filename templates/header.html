@@ -1,0 +1,54 @@
+<head>
+    <style>
+        nav {
+            background-color: #c9c5ba;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        ul, ol {
+            list-style: none;
+        }
+
+        .links li {
+            display: inline; 
+            margin-right: 20px; 
+            margin-left: 20px;
+        }
+
+        .links a {
+            font-size: 20px;
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 40px; 
+            margin: 0;
+        }
+
+    </style>
+
+</head>
+<nav class="bg-custom">
+    <div class="logo">
+        <img>
+        <a class ="text-3xl" href="#">
+            LiteraHub
+        </a>
+    </div>
+    <div class="links">
+        <ul>
+            <li><a class="text-gray-800 hover:text-red-700" href="#">LembarAsa</a></li>
+            <li><a class="text-gray-800 hover:text-red-700" href="#">Forum</a></li>
+            <li><a class="text-gray-800 hover:text-red-700" href="#">Daftar Buku</a></li>
+            <li><a class="text-gray-800 hover:text-red-700" href="#">Peminjaman</a></li>
+            <li><a class="text-gray-800 hover:text-red-700" href="#">Reservasi</a></li>
+            <li><a class="text-gray-800 hover:text-red-700" href="{% url 'main:login' %}">Login</a></li>
+            <li><a class="text-gray-800 hover:text-red-700" href="{% url 'main:register' %}">Register</a></li>
+            <li><a class="text-gray-800 hover:text-red-700" href="#">Logout</a></li>
+        </ul>
+    </div>
+</nav>
