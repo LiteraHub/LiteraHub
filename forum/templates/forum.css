@@ -1,0 +1,26 @@
+body {
+    background-color: #FFFFFF;
+}
+
+#header-box {
+    padding: 0 20px;
+}
+
+#forum-header {
+    color: #9873F7;
+    border: 2px;
+    font-size: 50px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.forum-container {
+    display: flex;
+    flex-direction: column;
+    background: #cdcdcd;
+    margin: 10px 10px;
+}
+
+.accordion-header {
+    background: #F6F6F6;
+    height: 30px;
+}
