@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'lembarasa',
     'peminjamanbuku',
     'reservasi',
+    'buku',
 ]
 
 MIDDLEWARE = [
