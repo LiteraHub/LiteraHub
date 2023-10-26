@@ -1,33 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-     <title>Register</title>
-</head>
-</html>
-<body>
-     <div class = "login">
+{% extends 'base.html' %} 
 
-          <h1>Register</h1>  
+{% block meta %} 
+<title>Register</title>
+{% endblock meta %}
+
+{% block content %}
+     <div class = "login">
           
-               <form method="POST" >  
-                    {% csrf_token %}  
-                    <table>  
-                         {{ form.as_table }}  
-                         <tr>  
-                              <td></td>
-                              <td><input type="submit" name="submit" value="Daftar"/></td>  
-                         </tr>  
-                    </table>  
-               </form>
+          <form method="POST" >  
+               {% csrf_token %}  
+               <table> 
+                    <tr>
+                         <td class="text-center">Register</td>  
+                    </tr> 
+                    {{ form.as_table }}  
+                    <tr>  
+                         <td></td>
+                         <td><input class="btn bg-amber-800 rounded-lg px-4 py-2" type="submit" name="submit" value="Daftar"/></td>  
+                    </tr>  
+               </table>  
+          </form>
           
           {% if messages %}  
-               <ul>   
-                    {% for message in messages %}  
-                         <li>{{ message }}</li>  
-                         {% endfor %}  
-               </ul>   
+          <ul>   
+               {% for message in messages %}  
+               <li>{{ message }}</li>  
+               {% endfor %}  
+          </ul>   
           {% endif %}
           
-     </div>  
-</body>
-</html>
+     </div> 
+{% endblock content %}
+
+{% include 'footer.html' %}
