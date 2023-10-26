@@ -2,25 +2,20 @@ body {
     background-color: #FFFFFF;
 }
 
-#header-box {
+#header-wrapper {
     padding: 0 20px;
-}
-
-#forum-header {
+    margin: 0 0 0 30px;
     color: #9873F7;
-    border: 2px;
-    font-size: 50px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-size: 25px;
 }
 
-.forum-container {
+.sidebar-box {
     display: flex;
+    background: grey;
     flex-direction: column;
-    background: #cdcdcd;
-    margin: 10px 10px;
 }
 
-.accordion-header {
-    background: #F6F6F6;
-    height: 30px;
+.forum-links {
+    background-color: grey;
+    border: black;
 }

@@ -4,50 +4,21 @@
     <link rel="stylesheet" href="forum.css">
 </head>
 <body>
-    <div id="header-box">
+    <div id="header-wrapper">
         <h1 id="forum-header">FORUM</h1>
     </div>
-    <div class="accordion-container">
-        <button class="accordion-header">
-            <div id="trending-forums"></div>
-        </button>
-    </div>
-    <div class="accordion-container">
-        <button class="accordion-header">
-            <div class="forum-container">
-                <div id="recent-forums"></div>
-            </div>
-        </button>
-    </div>
-    <div class="accordion-container">
-        <button class="accordion-header">
-            <div class="forum-container">
-                <div id="forum-list"></div>
-            </div>
-        </button>
-    </div>
-    <div class="accordion-container">
-        <button class="accordion-header">
-            <div class="forum-container">
-                <div id="add-forum"></div>
-            </div>
-        </button>
+    <div class="sidebar-wrapper">
+        <div class="sidebar-box">
+            <a href="" class="forum-links">Book Recommendations</a>
+            <a href="" class="forum-links">Trending</a>
+            <a href="" class="forum-links">Recent</a>
+            <a href="" class="forum-links">Explore</a>
+            <a href="" class="forum-links">Add Forum</a>
+        </div>
     </div>
 
     <script>
-        const accordianContainer = document.getElementById('accordion-container');
-        accordianContainer.addEventListener("click", function(event) {
-            const target = event.target;
-            if (target && target.classList.contains('accordion-header')) {
-                const panel = target.nextElementSibling;
-                target.classList.toggle("active");
-                if (panel.style.maxHeight) {
-                  panel.style.maxHeight = null;
-                } else {
-                  panel.style.maxHeight = panel.scrollHeight + "px";
-                }
-              }
-            });
+        
     </script>
 </body>
 </html>
