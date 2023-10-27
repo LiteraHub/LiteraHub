@@ -9,4 +9,5 @@ urlpatterns = [
         path('get-buku-item/', get_buku_json, name='get_buku_json'),
         path('pinjam_buku/', pinjam_buku, name='pinjam_buku'),
         path('get-buku-by-id/<int:id>/', get_buku_by_id, name='get_buku_by_id'),
+        path('kembalikan-buku/<int:id>/', kembalikan_buku, name='kembalikan_buku'),
 ]

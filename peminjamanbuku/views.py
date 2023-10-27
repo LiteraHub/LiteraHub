@@ -7,14 +7,18 @@ from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.http import HttpResponse, HttpResponseNotFound
 from django.views.decorators.csrf import csrf_exempt
+from peminjamanbuku.forms import PinjamForm
 
 @login_required(login_url='/login')
 def show_peminjaman(request):
+    form = PinjamForm(request.POST or None)
+
     dataReady = Buku.objects.filter(is_ready = True)
     dataPinjam = PeminjamanBuku.objects.filter(user=request.user, is_dikembalikan = False)
     context = {
         'dataReady': dataReady,
-        'dataPinjam': dataPinjam
+        'dataPinjam': dataPinjam,
+        'form' : form
     }
 
     return render(request, 'pinjam.html', context)
@@ -23,8 +27,8 @@ def show_peminjaman(request):
 def pinjam_buku(request):
     if request.method == 'POST':
         formData = request.POST
-        name = formData.get('namaUser')
-        tanggal_akhir = formData.get('tanggalAkhir')
+        name = formData.get('nama')
+        tanggal_akhir = formData.get('tanggal_pengembalian')
         tanggal_akhir_fix = datetime.strptime(tanggal_akhir, "%Y-%m-%d").date()
         bookId = formData.get('bookId')
         bukus = Buku.objects.filter(id=bookId)
@@ -43,12 +47,25 @@ def pinjam_buku(request):
             nama=name, 
             tanggal_pengembalian= tanggal_akhir_fix, 
             is_dikembalikan = False,
+            title = bukus.first().title
         )
         new_peminjaman.save()
 
         return HttpResponse(b"CREATED", status=201)
     
     return HttpResponseNotFound()
+
+@csrf_exempt
+def kembalikan_buku(request, id):
+    if request.method == 'POST':
+        bukuDikembalikan = Buku.objects.get(pk=id)
+        bukuDikembalikan.is_ready = True
+        bukuDikembalikan.save()
+        objekPeminjaman = PeminjamanBuku.objects.filter(buku=bukuDikembalikan).filter(user=request.user)
+        objekPeminjaman.first().delete()
+        return HttpResponse(b"DIHAPUS", status = 201)
+    return HttpResponseNotFound()    
+
 
 def get_pinjam_json(request):
     dataPinjam = PeminjamanBuku.objects.filter(user=request.user).filter(is_dikembalikan=False)

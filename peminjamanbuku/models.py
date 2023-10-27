@@ -11,4 +11,5 @@ class PeminjamanBuku(models.Model):
     tanggal_pengembalian = models.DateField()
     is_dikembalikan = models.BooleanField()
     gambarBuku = models.TextField()
+    title = models.CharField(max_length=200)
         

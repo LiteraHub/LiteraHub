@@ -9,22 +9,15 @@
 
 {% block content %}
 <div id="modal" class="fixed left-0 top-0 bg-black bg-opacity-50 w-screen h-screen flex justify-center items-center hidden">
-    <div id="inside" class="rounded shadow-md p-8 w-[70%]" style="background-color: #f6d9af;">
+    <div id="inside" class="rounded shadow-md p-8 sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-2/5 2xl:w-1/3" style="background-color: #f6d9af; display: flex; flex-direction: column;">
         <div>
             <form id="pinjamForm">
-                <div class="mb-4">
-                    <label for="namaUser" class="block text-sm font-medium text-gray-700">Nama User:</label>
-                    <input type="text" id="namaUser" name="namaUser" class="form-input w-full">
-                </div>
-                <div class="mb-4">
-                    <label for="tanggalAkhir" class="block text-sm font-medium text-gray-700">Tanggal Pengembalian:</label>
-                    <input type="date" id="tanggalAkhir" name="tanggalAkhir" class="form-input w-full">
-                </div>
+                {{form}}
             </form>
-            <div class="text-right" style="display: flex; justify-content: center;">
+            <div class="text-center sm:text-right mb-4" style="display: flex; justify-content: center;">
                 <button onclick="pinjamBuku()" id="pinjamButton" type="submit" class="bg-white border-[1px] border-gray-600 rounded px-4 py-2 text-black cursor-pointer hover:bg-blue-700" style="margin-bottom: 10px;">Pinjam</button>
             </div>
-            <div style="display: flex; justify-content: center;">
+            <div class="text-center">
                 <button onclick="closeModal()" id="dialog" class="bg-white border-[1px] border-gray-600 rounded px-4 py-2 text-black cursor-pointer hover:bg-gray-600"> Cancel</button>
             </div>
         </div>
@@ -32,10 +25,8 @@
 </div>
 
 <div id="modal-dipinjam" class="fixed left-0 top-0 bg-black bg-opacity-50 w-screen h-screen flex justify-center items-center hidden">
-    <div id="informasi-dipinjam" class="rounded shadow-md p-8 w-[70%]" style="background-color: #f6d9af;">
-        <div style="display: flex; justify-content: center;">
-            <button onclick="closeModal()" id="dialog" class="bg-white border-[1px] border-gray-600 rounded px-4 py-2 text-black cursor-pointer hover:bg-gray-600"> Cancel</button>
-        </div>
+    <div id="informasi-dipinjam" class="rounded shadow-md p-8 sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-2/5 2xl:w-1/3" value1= "" style="background-color: #f6d9af; display: flex; 
+    flex-direction: column;">
     </div>
 </div>
 
@@ -48,17 +39,23 @@
     </div>
     <hr class="my-4" style="border-color: black; border-width: 2px;">
     <div>
-        <h1 class="text-3xl" style="margin-top: 30px; margin-bottom: 30px;">
+        <h1 class="text-2xl" style="margin-top: 30px; margin-bottom: 5px;">
             Buku Dipinjam 
         </h1>
-        <div class="place-content-center" id="product_dipinjam"></div>
+        <h1 class="text-1xl" style="margin-bottom: 30px;">
+            <span class="italic"> Click</span> gambar untuk mengembalikan!
+        </h1>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 place-content-center" id="product_dipinjam"></div>
     </div>
     <hr class="my-4" style="border-color: black; border-width: 2px;">
     <div>
-        <h1 class="text-3xl" style="margin-top: 30px; margin-bottom: 30px;">
+        <h1 class="text-2xl" style="margin-top: 30px; margin-bottom: 5px;">
             Buku Tersedia
         </h1>
-        <div class="place-content-center" id="product_table"></div>
+        <h1 class="text-1xl" style="margin-bottom: 30px;">
+            Click gambar untuk meminjam!
+        </h1>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 place-content-center" id="product_table"></div>
     </div>
 </div>
 
@@ -72,6 +69,11 @@
         return fetch("{% url 'peminjamanbuku:get_pinjam_json' %}").then((res) => res.json())
     }
 
+    async function getBuku(id) {
+        let url = `/peminjamanbuku/get-buku-by-id/${id}/`;
+        return fetch(url).then((res) => res.json());
+    }
+
     async function refreshItem() {
         document.getElementById("product_table").innerHTML = ""
         let all = await getAll()
@@ -83,7 +85,8 @@
                         <button onclick="openForm(${item.pk})" class="modal-link">
                             <img for="modal-pinjem" src="${item.fields.img}" style="object-fit: contain; width: 100%; height: 100%;">
                         </button>
-                    </div>
+                        </div>
+                        <label>${item.fields.title}</label>
                 </div>` 
         })
 
@@ -96,10 +99,11 @@
             htmlString += `
                 <div class="card">
                     <div class="card-body">
-                        <button onclick="openDetail(${item.fields.buku})" class="modal-link">
+                        <button onclick="openDetail(${item.fields.buku} )" class="modal-link">
                             <img src="${item.fields.gambarBuku}" style="object-fit: contain; width: 100%; height: 100%;">
                         </button>
                     </div>
+                    <label>${item.fields.title}</label>
                 </div>` 
         })
 
@@ -119,8 +123,9 @@
     }
 
     function pinjamBuku() {
-        let formData = new FormData(document.querySelector('#pinjamForm'));
+        let formData = new FormData(document.getElementById('pinjamForm'));
         formData.append('bookId', bookId);
+        console.log(formData)
         closeModal()
 
         fetch("{% url 'peminjamanbuku:pinjam_buku' %}", {
@@ -130,10 +135,38 @@
             document.getElementById("pinjamForm").reset()
         }
 
-    function openDetail(id) {
+    async function openDetail(id) {
         const modalPinjam = document.getElementById('modal-dipinjam');
-        modal.classList.remove('hidden');
-        bookId = id
+        let bukuDicari = await getBuku(id)
+        document.getElementById("informasi-dipinjam").value1 = id
+        document.getElementById("informasi-dipinjam").innerHTML = ""
+        let htmlString = ""
+        htmlString += `
+                    <div style="display: flex; flex-direction: row; margin-bottom: 3%">
+                        <div style="width: 45%; margin-right: 5% ">
+                            <img class="drop-shadow-2xl" src="${bukuDicari[0].fields.img}" style="object-fit: contain; width: 100%; height: 90% ;">
+                        </div>
+                        <div style="width: 75%; display: flex; flex-direction: column;>
+                            <div class= "place-content-center">
+                                <label class= "text-center font-semibold text-xl" style="margin-bottom:4%">Detail Buku</label>
+                                <br>
+                                <label class= "font-normal" style="margin-bottom:2.5%">Nama Buku: ${bukuDicari[0].fields.title}</label>
+                                <label class= "font-normal" style="margin-bottom:2.5%">Author: ${bukuDicari[0].fields.author}</label>
+                                <label class= "font-normal" style="margin-bottom:2.5%">Tahun Terbit: ${bukuDicari[0].fields.year}</label>
+                                <label class= "font-normal" style="margin-bottom:2.5%">Isbn: ${bukuDicari[0].fields.isbn}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: center;">
+                        <button onclick="kembalikanBuku()" id="kembalikanButton" type="submit" class="bg-white border-[1px] border-gray-600 rounded px-4 py-2 text-black cursor-pointer hover:bg-blue-700" 
+                        style="margin-bottom: 10px;"> Kembalikan </button>
+                    </div>
+                    <div style="display: flex; justify-content: center;">                
+                        <button onclick="closeDetail()" id="dialog" class="bg-white border-[1px] border-gray-600 rounded px-4 py-2 text-black cursor-pointer hover:bg-gray-600"> Cancel</button>
+                    </div>` 
+        document.getElementById("informasi-dipinjam").innerHTML = htmlString
+        refreshItem()
+        modalPinjam.classList.remove('hidden');
     }
 
     function closeDetail() {
@@ -141,6 +174,19 @@
         modal.classList.add('hidden'); 
     }
 
+    // TODO: INI BELOM
+    function kembalikanBuku() {
+        let id = document.getElementById("informasi-dipinjam").value1
+        let formData = new FormData();
+        formData.append('bookId', id);
+        
+        fetch(`/peminjamanbuku/kembalikan-buku/${id}/`, {
+        method: "POST",
+        body: formData
+        }).then(refreshItem);
+            closeDetail()
+        }
+    
     refreshItem()
     
 </script>
