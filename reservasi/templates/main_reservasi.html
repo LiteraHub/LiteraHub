@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+     .main-container {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          height: 60vh; 
+          background-color: rgba(88, 87, 87, 0.1); 
+          margin-top: 20px;
+          margin-left: 20px;
+          margin-right: 20px;
+          border-radius: 10px;
+          padding: 20px;
+          color: black;
+     }
+</style>
+
+<div class="main-container">
+     <h3>Kamu Ingin Membaca Bersama di LiteraHub?</h3>
+     <br/>
+     <h4>Ayo segera reservasi tempat bacamu!</h4>
+     <br>
+
+     <a href="{% url 'reservasi:buat_reservasi' %}">
+          <button type="button" class="btn btn-primary"><b>
+               Reservasi Disini
+          </b></button>
+     </a>
+</div>
+{% endblock content %}

@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+     .form-container {
+          background-color: rgba(45, 45, 45, 0.1); 
+          margin-top: 30px;
+          margin-bottom: 10px;
+          margin-left: 80px;
+          margin-right: 80px;
+          padding: 50px;
+          border-radius: 10px;
+
+     }
+
+     h2 {
+          margin-top: 30px;
+          text-align: center;
+     }
+
+     #lihatKatalogBuku {
+          margin-top: 10px;
+     }
+
+     .form-control{
+          max-width: 800px;
+     }
+
+     .footer {
+          display: flex;
+          justify-content: center;
+     }
+
+     .footer button {
+          margin: 0 10px; 
+     }
+
+     .col-form-label {
+          font-size: large;
+     }
+
+     .katalog {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-around;
+     }
+
+     .buku-card {
+          border: 1px solid #ccc;
+          margin: 10px;
+          padding: 10px;
+          flex-basis: calc(33.33% - 20px);
+     }
+
+     .buku-card img {
+          width: auto;
+          height: auto;
+     }
+</style>
+
+<h2><b>Ayo Reservasi di LiteraHub!</b></h2>
+
+<div class="form-container">
+     <h3 style="text-align: center;"><b>Formulir Reservasi</b></h3>
+     <br>
+     <form id="reservasiForm">
+          {% csrf_token %}
+          <div class="mb-3">
+               <label for="nama" class="col-form-label"><b>Nama</b></label>
+               <input type="text" class="form-control" id="nama" name="nama" maxlength="50"></input>
+          </div>
+          <div class="mb-3">
+               <label for="no_hp" class="col-form-label"><b>Nomor Ponsel</b></label>
+               <input type="text" class="form-control" id="no_hp" name="no_hp" oninput="this.value = this.value.replace(/[^0-9]/g,'');"></input>
+          </div>
+          <div class="mb-3">
+               <label for="buku" class="col-form-label"><b>Buku</b></label>
+               <input type="search" class="form-control" id="buku" name="buku" placeholder="Cari buku..."></input>
+               <button type="button" class="btn btn-primary" id="katalogBukuModalButton" data-toggle="modal" data-target="#katalogBukuModal" style="margin-top: 10px;">Lihat Katalog Buku</button>          </div>
+          <div class="mb-3">
+               <label for="durasi_baca" class="col-form-label"><b>Durasi</b></label><br>
+               <div class="form-check">
+                    <input type="radio" class="form-check-input" id="durasi1" name="durasi_baca" value="1">
+                    <label class="form-check-label" for="durasi1">1 Jam</label>
+               </div>
+               <div class="form-check">
+                    <input type="radio" class="form-check-input" id="durasi2" name="durasi_baca" value="1">
+                    <label class="form-check-label" for="durasi2">2 Jam</label>
+               </div>
+               <div class="form-check">
+                    <input type="radio" class="form-check-input" id="durasi3" name="durasi_baca" value="1">
+                    <label class="form-check-label" for="durasi3">3 Jam</label>
+               </div>
+               <div class="form-check">
+                    <input type="radio" class="form-check-input" id="durasi4" name="durasi_baca" value="1">
+                    <label class="form-check-label" for="durasi4">4 Jam</label>
+               </div>
+               <div class="form-check">
+                    <input type="radio" class="form-check-input" id="durasi5" name="durasi_baca" value="1">
+                    <label class="form-check-label" for="durasi5">5 Jam</label>
+               </div>
+          </div>
+          <div class="mb-3">
+               <label for="tempat_baca" class="col-form-label"><b>Tempat Baca</b></label><br>
+               <div class="form-check">
+                    <input type="radio" class="form-check-input" id="tempat1" name="tempat_baca" value="1">
+                    <label class="form-check-label" for="tempat1">Tempat Baca 1</label>
+               </div>
+               <div class="form-check">
+                    <input type="radio" class="form-check-input" id="tempat2" name="tempat_baca" value="2">
+                    <label class="form-check-label" for="tempat2">Tempat Baca 2</label>
+               </div>
+               <div class="form-check">
+                    <input type="radio" class="form-check-input" id="tempat3" name="durasi_baca" value="3">
+                    <label class="form-check-label" for="tempat3">Tempat Baca 3</label>
+               </div>
+               <div class="form-check">
+                    <input type="radio" class="form-check-input" id="tempat4" name="durasi_baca" value="4">
+                    <label class="form-check-label" for="tempat4">Tempat Baca 4</label>
+               </div>
+               <div class="form-check">
+                    <input type="radio" class="form-check-input" id="tempat5" name="durasi_baca" value="5">
+                    <label class="form-check-label" for="tempat5">Tempat Baca 5</label>
+               </div>
+               <div class="form-check">
+                    <input type="radio" class="form-check-input" id="tempat6" name="durasi_baca" value="6">
+                    <label class="form-check-label" for="tempat6">Tempat Baca 6</label>
+               </div>
+               <div class="form-check">
+                    <input type="radio" class="form-check-input" id="tempat7" name="durasi_baca" value="7">
+                    <label class="form-check-label" for="tempat7">Tempat Baca 7</label>
+               </div>
+               <div class="form-check">
+                    <input type="radio" class="form-check-input" id="tempat8" name="durasi_baca" value="8">
+                    <label class="form-check-label" for="tempat8">Tempat Baca 8</label>
+               </div>
+               <div class="form-check">
+                    <input type="radio" class="form-check-input" id="tempat9" name="durasi_baca" value="9">
+                    <label class="form-check-label" for="tempat9">Tempat Baca 9</label>
+               </div>
+               <div class="form-check">
+                    <input type="radio" class="form-check-input" id="tempat10" name="durasi_baca" value="10">
+                    <label class="form-check-label" for="tempat10">Tempat Baca 10</label>
+               </div>
+          </div>
+     </form>
+     <div class="footer">
+          <button type="button" class="btn btn-primary" id="submitReservasi"><b>Submit</b></button>
+          <button type="button" class="btn btn-secondary"><b>Cancel</b></button>
+     </div>
+</div>
+
+<div class="modal fade" id="katalogBukuModal" tabindex="-1" role="dialog" aria-labelledby="katalogBukuModalLabel" aria-hidden="true">
+     <div class="modal-dialog" role="document">
+          <div class="modal-content">
+          <div class="modal-header">
+               <h5 class="modal-title" id="katalogBukuModalLabel">Katalog Buku</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+               </button>
+          </div>
+          <div class="modal-body">
+          </div>
+          </div>
+     </div>
+</div>
+
+<script>
+     $(document).ready(function() {
+       // Menampilkan modal saat tombol "Lihat Katalog Buku" diklik
+          $('#katalogBukuModalButton').click(function() {
+               $.get("{% url 'reservasi:get_buku_json' %}", function(data) {
+                    var modalBody = $('#katalogBukuModal .modal-body');
+                    modalBody.empty();
+
+                    // Loop melalui data buku dan menambahkannya ke modal
+                    data.forEach(function(buku) {
+                         var bukuCard = '<div class="buku-card">' + 
+                              '<img src="' + buku.img + '" alt="' + buku.title + '">' +
+                              '<h2>' + buku.title + '</h2>' +
+                              '<p>' + buku.author + '</p>' +
+                              '</div>';
+                         modalBody.append(bukuCard);
+                    });
+               $('#katalogBukuModal').modal('show');
+               });
+          });
+     });
+</script>
+
+{% endblock %}

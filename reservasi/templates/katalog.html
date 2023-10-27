@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+     .katalog {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-around;
+     }
+
+     .buku-card {
+          border: 1px solid #ccc;
+          margin: 10px;
+          padding: 10px;
+          flex-basis: calc(33.33% - 20px);
+     }
+
+     .buku-card img {
+          width: auto;
+          height: auto;
+     }
+</style>
+
+<h1>Katalog Buku</h1>
+
+<div class="katalog">
+     {% for buku in daftar_buku %}
+     <div class="buku-card">
+          <img src="{{ buku.img }}" alt="{{ buku.title }}">
+          <h2>{{ buku.title }}</h2>
+          <p>{{ buku.author }}</p>
+          <a href="{% url 'reservasi:buat_reservasi' %}?buku_id={{ buku.id }}">Pilih Buku Ini</a>
+     </div>
+     {% endfor %}
+</div>
+{% endblock %}

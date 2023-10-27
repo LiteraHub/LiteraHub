@@ -25,6 +25,6 @@ urlpatterns = [
     # path('forum/', include('forum.urls')),
     # path('daftarbuku/', include('daftarbuku.urls')),
     # path('peminjamanbuku/', include('peminjamanbuku.urls')),
-    # path('reservasi/', include('reservasi.urls')),
+    path('reservasi/', include('reservasi.urls')),
     path('api/buku/', include('buku.urls')),
 ]
