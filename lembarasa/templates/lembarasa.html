@@ -11,23 +11,25 @@
 
 {% block content %}
     <div class="container" style="padding-top: 10px;">
-        <h1>Hello World!!!</h1>
+        <div style="text-align: center;" class="p-4">
+            <p class="fs-1 fw-bolder p-2">Halo, {{user}}!</p>
+            <p class="fs-6 fw-medium text-muted">Karya unikmu, dunia digital kami</p>
+            <p class="fs-6 fw-medium text-muted">Unggah bukumu dan biarkan semua orang terinspirasi</p>
+        </div>
 
-        <!-- Button trigger modal -->
+        <!-- Button trigger modal input-->
         <div class="mx-auto p-2" style="width: 146px;">
-            <p>tes</p>
             <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#inputModal">
                 Mulai Berkarya
             </button>
         </div>
         
-        <!-- Modal -->
+        <!-- Modal untuk Input -->
         <div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg">
-                <div class="modal-content">
+                <div class="modal-content" style="background-color: #f2eee3;">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="inputModalLabel">Buat Karyamu</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form id="form" onsubmit="return false;">
@@ -54,20 +56,8 @@
             </div>
         </div>
 
-        <div class="row row-cols-1 row-cols-md-6 g-4" id="card_buku">
-            <!-- {% for satu_buku in mybuku %}
-                <div class="col">
-                    <div class="card h-100">
-                        <img src= {{satu_buku.buku.img}} class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">{{satu_buku.buku.title}}</h5>
-                            <p class="card-text">{{satu_buku.buku.author}}</p>
-                            <p class="card-text">{{satu_buku.buku.year}}</p>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %} -->
-        </div>
+        <!-- Card -->
+        <div class="row row-cols-1 row-cols-md-6 g-4 pt-5" id="card_buku"></div>
     </div>
     <script>
         async function getBuku() {
@@ -83,9 +73,13 @@
                 <div class="card h-100">
                     <img src= ${satu_buku.fields.img} class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">${satu_buku.fields.title}</h5>
+                        <p class="card-title fs-5 fw-semibold">${satu_buku.fields.title}</p>
                         <p class="card-text">${satu_buku.fields.author}</p>
                         <p class="card-text">${satu_buku.fields.year}</p>
+                    </div>
+                    <div class="p-3">
+                        <button class="btn btn-outline-dark btn-sm">Lihat</button>
+                        <button class="btn btn-outline-danger btn-sm" onclick="deleteBuku(${satu_buku.pk})">Hapus</button>
                     </div>
                 </div>
             </div>` 
@@ -107,5 +101,9 @@
         }
 
         document.getElementById("button_add").onclick = addBuku
+
+        function deleteBuku(id) {
+            fetch(`delete-ajax/${id}/`).then(refreshBuku);
+        }
     </script>
 {% endblock content %}
