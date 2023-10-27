@@ -35,7 +35,7 @@
 <nav class="bg-custom">
     <div class="logo">
         <img>
-        <a class ="text-3xl" href="#">
+        <a class ="text-3xl ml-7" href="{% url 'main:show_main' %}">
             LiteraHub
         </a>
     </div>
@@ -45,10 +45,13 @@
             <li><a class="text-gray-800 hover:text-red-700" href="#">Forum</a></li>
             <li><a class="text-gray-800 hover:text-red-700" href="#">Daftar Buku</a></li>
             <li><a class="text-gray-800 hover:text-red-700" href="#">Peminjaman</a></li>
-            <li><a class="text-gray-800 hover:text-red-700" href="reservasi/">Reservasi</a></li>
+            <li><a class="text-gray-800 hover:text-red-700" href="#">Reservasi</a></li>
+            {% if user.is_authenticated %}
+            <li><a class="text-gray-800 hover:text-red-700" href="{% url 'main:logout' %}">Logout</a></li>
+            {% else %}
             <li><a class="text-gray-800 hover:text-red-700" href="{% url 'main:login' %}">Login</a></li>
             <li><a class="text-gray-800 hover:text-red-700" href="{% url 'main:register' %}">Register</a></li>
-            <li><a class="text-gray-800 hover:text-red-700" href="#">Logout</a></li>
+            {% endif %}
         </ul>
     </div>
 </nav>
