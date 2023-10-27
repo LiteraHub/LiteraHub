@@ -12,19 +12,100 @@
 {% block content %}
     <div class="container" style="padding-top: 10px;">
         <h1>Hello World!!!</h1>
-        <div class="row row-cols-1 row-cols-md-6 g-4">
-            {% for satu_buku in buku %}
+
+        <!-- Button trigger modal -->
+        <div class="mx-auto p-2" style="width: 146px;">
+            <p>tes</p>
+            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#inputModal">
+                Mulai Berkarya
+            </button>
+        </div>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="inputModalLabel">Buat Karyamu</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form" onsubmit="return false;">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="judul" class="col-form-label">Judul:</label>
+                                <input type="text" class="form-control" id="judul" name="judul"></input>
+                            </div>
+                            <div class="mb-3">
+                                <label for="img" class="col-form-label">Tautan gambar:</label>
+                                <input type="text" class="form-control" id="img" name="img"></input>
+                            </div>
+                            <div class="mb-3">
+                                <label for="isi" class="col-form-label">Karyamu:</label>
+                                <textarea rows="10" class="form-control" id="isi" name="isi"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Tutup</button>
+                        <button type="button" class="btn btn-outline-success" id="button_add" data-bs-dismiss="modal">Tambah karya</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-6 g-4" id="card_buku">
+            <!-- {% for satu_buku in mybuku %}
                 <div class="col">
                     <div class="card h-100">
-                        <img src= {{satu_buku.img}} class="card-img-top" alt="...">
+                        <img src= {{satu_buku.buku.img}} class="card-img-top" alt="...">
                         <div class="card-body">
-                            <h5 class="card-title">{{satu_buku.title}}</h5>
-                            <p class="card-text">{{satu_buku.author}}</p>
-                            <p class="card-text">{{satu_buku.year}}</p>
+                            <h5 class="card-title">{{satu_buku.buku.title}}</h5>
+                            <p class="card-text">{{satu_buku.buku.author}}</p>
+                            <p class="card-text">{{satu_buku.buku.year}}</p>
                         </div>
                     </div>
                 </div>
-            {% endfor %}
+            {% endfor %} -->
         </div>
     </div>
+    <script>
+        async function getBuku() {
+            return fetch("{% url 'lembarasa:get_buku_json' %}").then((res) => res.json())
+        }
+
+        async function refreshBuku() {
+            document.getElementById("card_buku").innerHTML = ""
+            const mybuku = await getBuku()
+            let htmlString = ``
+            mybuku.forEach((satu_buku) => {
+                htmlString += `\n<div class="col">
+                <div class="card h-100">
+                    <img src= ${satu_buku.fields.img} class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">${satu_buku.fields.title}</h5>
+                        <p class="card-text">${satu_buku.fields.author}</p>
+                        <p class="card-text">${satu_buku.fields.year}</p>
+                    </div>
+                </div>
+            </div>` 
+            })
+            
+            document.getElementById("card_buku").innerHTML = htmlString
+        }
+
+        refreshBuku()
+
+        function addBuku() {
+            fetch("{% url 'lembarasa:create_ajax' %}", {
+                method: "POST",
+                body: new FormData(document.querySelector('#form'))
+            }).then(refreshBuku)
+
+            document.getElementById("form").reset()
+            return false
+        }
+
+        document.getElementById("button_add").onclick = addBuku
+    </script>
 {% endblock content %}
