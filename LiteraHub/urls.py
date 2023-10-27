@@ -22,7 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
     # path('lembarasa/', include('lembarasa.urls')),
-    # path('forum/', include('forum.urls')),
+    path('forum/', include('forum.urls')),
     # path('daftarbuku/', include('daftarbuku.urls')),
     # path('peminjamanbuku/', include('peminjamanbuku.urls')),
     # path('reservasi/', include('reservasi.urls')),
