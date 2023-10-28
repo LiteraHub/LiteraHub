@@ -36,15 +36,15 @@
                             {% csrf_token %}
                             <div class="mb-3">
                                 <label for="judul" class="col-form-label">Judul:</label>
-                                <input type="text" class="form-control" id="judul" name="judul"></input>
+                                {{form_buku.title}}
                             </div>
                             <div class="mb-3">
                                 <label for="img" class="col-form-label">Tautan gambar:</label>
-                                <input type="text" class="form-control" id="img" name="img"></input>
+                                {{form_buku.img}}
                             </div>
                             <div class="mb-3">
                                 <label for="isi" class="col-form-label">Karyamu:</label>
-                                <textarea rows="10" class="form-control" id="isi" name="isi"></textarea>
+                                {{form_mybuku.isi}}
                             </div>
                         </form>
                     </div>

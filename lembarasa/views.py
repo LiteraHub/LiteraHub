@@ -6,16 +6,21 @@ from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 import datetime
+from lembarasa.forms import BukuForm, MyBukuForm
 
 @login_required(login_url='/login')
 def show_lembarasa(request):
     buku = Buku.objects.all()
     mybuku = MyBuku.objects.all()
+    form_buku = BukuForm(request.POST or None)
+    form_mybuku = MyBukuForm(request.POST or None)
 
     context = {
         'buku' : buku,
         'mybuku' : mybuku,
         'user' : request.user.username,
+        'form_buku' : form_buku,
+        'form_mybuku' : form_mybuku,
     }
 
     return render(request, "lembarasa.html", context)
@@ -37,13 +42,13 @@ def get_buku_json(request):
 @csrf_exempt
 def create_ajax(request):
     if request.method == 'POST':
-        judul = request.POST.get("judul")
+        title = request.POST.get("title")
         img = request.POST.get("img")
         isi = request.POST.get("isi")
         user = request.user
         year = datetime.datetime.today().year
 
-        new_buku = Buku(isbn=0, title=judul, author=user, year=year, img=img)
+        new_buku = Buku(isbn=0, title=title, author=user, year=year, img=img)
         new_buku.save()
         new_mybuku = MyBuku(buku=new_buku, user=user, isi=isi)
         new_mybuku.save()
