@@ -65,6 +65,23 @@
 
         <!-- Card -->
         <div class="row row-cols-1 row-cols-md-6 g-4 pt-5" id="card_buku"></div>
+
+        <!-- Modal untuk lihat isi buku -->
+        <div class="modal fade" id="modal_isi" tabindex="-1" aria-labelledby="modalIsiLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                <div class="modal-content" style="background-color: #f2eee3;">
+                    <div class="modal-body">
+                        <div>
+                            <p id="modal_judul">Judul</p>
+                        </div>
+                        <div id="modal_content"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Tutup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <script>
         const elementIds = ["id_title", "id_img", "id_isi"];
@@ -87,9 +104,9 @@
 
         async function refreshBuku() {
             document.getElementById("card_buku").innerHTML = ""
-            const mybuku = await getBuku()
+            const buku = await getBuku()
             let htmlString = ``
-            mybuku.forEach((satu_buku) => {
+            buku.forEach((satu_buku) => {
                 htmlString += `\n<div class="col">
                 <div class="card h-100">
                     <img src= ${satu_buku.fields.img} class="card-img-top" alt="...">
@@ -99,7 +116,7 @@
                         <p class="card-text">${satu_buku.fields.year}</p>
                     </div>
                     <div class="p-3">
-                        <button class="btn btn-outline-dark btn-sm">Lihat</button>
+                        <button class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#modal_isi" onclick = "modalIsi(${satu_buku.pk}); modalJudul('${satu_buku.fields.title}')">Lihat</button>
                         <button class="btn btn-outline-danger btn-sm" onclick="deleteBuku(${satu_buku.pk})">Hapus</button>
                     </div>
                 </div>
@@ -107,6 +124,30 @@
             })
             
             document.getElementById("card_buku").innerHTML = htmlString
+        }
+
+        async function getMyBuku(id) {
+            return fetch(`get-mybuku-id/${id}/`).then((res) => res.json())
+        }
+
+        async function modalIsi(id) {
+            const modalContent = document.getElementById("modal_content")
+            modalContent.innerHTML = ""
+
+            const mybuku = await getMyBuku(id)
+            if (mybuku) {
+                const content = mybuku[0].fields.isi
+
+                const contentElement = document.createElement("div")
+                contentElement.innerHTML = content
+
+                modalContent.appendChild(contentElement)
+            }
+        }
+
+        async function modalJudul(title) {
+            const judul = title
+            document.getElementById("modal_judul").innerHTML = judul
         }
 
         refreshBuku()

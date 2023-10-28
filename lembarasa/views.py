@@ -35,9 +35,14 @@ def show_json_mybuku(request):
 
 def get_buku_json(request):
     list_id_buku = MyBuku.objects.filter(user=request.user).values_list('buku') #list_idbuku
-    # print(my_buku)
-    my_buku = Buku.objects.filter(id__in=list_id_buku)
-    return HttpResponse(serializers.serialize('json', my_buku))
+    buku = Buku.objects.filter(id__in=list_id_buku)
+    return HttpResponse(serializers.serialize('json', buku))
+
+def get_mybuku_json_id(request,id):
+    buku_cari = Buku.objects.get(pk=id)    
+    mybuku = MyBuku.objects.get(buku = buku_cari)
+    mybuku_list = [mybuku]
+    return HttpResponse(serializers.serialize('json', mybuku_list))
 
 @csrf_exempt
 def create_ajax(request):
