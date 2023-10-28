@@ -16,7 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("__reload__/", include("django_browser_reload.urls")),
+    path('', include('main.urls')),
+    # path('lembarasa/', include('lembarasa.urls')),
+    # path('forum/', include('forum.urls')),
+    # path('daftarbuku/', include('daftarbuku.urls')),
+    path('peminjamanbuku/', include('peminjamanbuku.urls')),
+    # path('reservasi/', include('reservasi.urls')),
+    path('api/buku/', include('buku.urls')),
 ]

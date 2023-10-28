@@ -1,0 +1,135 @@
+{% extends 'base.html' %} 
+{% load static %}
+
+{%block meta%}
+<link rel="stylesheet" href="{% static 'landingpage.css' %}">
+<title>LiteraHub</title>
+{% endblock meta%}
+{% block content %}
+<div class="welcoming">
+    <div id="left-welcome">
+        <br><br><br><br><br>
+        <h1 class="header-text text-6xl align-baseline">Welcome to LiteraHub!</h1>
+    </div>
+    <div id="right-welcome">
+        <h3>Mulai Membaca</h3>
+        <button id="daftar-buku">Daftar Buku</button>
+    </div>
+</div>
+<div class="card-container">
+  <div class="card" id="lembar-asa">
+      <h2>Lembar Asa</h2>
+  </div>
+
+  <div class="card" id="peminjaman-buku">
+      <h2>Pinjam Buku</h2>
+  </div>
+
+  <div class="card" id="reservasi">
+      <h2 >Reservasi</h2>
+  </div>
+</div>
+
+<!-- Pop-up -->
+<div id="modul-details" class="popup">
+  <div class="popup-content">
+      <span class="close">×</span>
+      <p id="popup-text"></p>
+      <button id="popup-button">Lanjut ke halaman</button>
+  </div>
+</div>
+<div class="carousel">
+    <div class="carousel-item">
+        <h5>Mau ngomongin buku?</h5>
+        <button>Ke Forum >></button>
+    </div>
+    <div class="carousel-item">
+        <h5>Yang lagi marak dingomongin</h5>
+        <div class="flex-container">
+            <button class="recommend-item">insert forum link 1</button>
+            <button class="recommend-item">insert forum link 2</button>
+            <button class="recommend-item">insert forum link 3</button>
+        </div>
+    </div>
+    <div class="carousel-item">
+        <h4>Lagi tunggu apa? (kyk kasi motivasi gt wkwkwk)</h4>
+    </div>
+</div>
+<script>
+    document.querySelectorAll(".carousel").forEach((carousel) => {
+        const items = carousel.querySelectorAll(".carousel-item");
+        const buttonsHtml = Array.from(items, () => {
+          return `<span class="carousel-button"></span>`;
+        });
+      
+        carousel.insertAdjacentHTML(
+          "beforeend",
+          `
+              <div class="carousel-navigator">
+                  ${buttonsHtml.join("")}
+              </div>
+          `
+        );
+      
+        const buttons = carousel.querySelectorAll(".carousel-button");
+      
+        buttons.forEach((button, i) => {
+          button.addEventListener("click", () => {
+            // un-select all the items
+            items.forEach((item) =>
+              item.classList.remove("carousel-item-selected")
+            );
+            buttons.forEach((button) =>
+              button.classList.remove("carousel-button-selected")
+            );
+      
+            items[i].classList.add("carousel-item-selected");
+            button.classList.add("carousel-button-selected");
+          });
+        });
+      
+        // Select the first item on page load
+        items[0].classList.add("carousel-item-selected");
+        buttons[0].classList.add("carousel-button-selected");
+      });
+
+    //bagian rena
+    var popup = document.getElementById("modul-details");
+
+    var modalButton = document.getElementById("popup-button");
+    var modalText = document.getElementById("popup-text");
+
+    var cards = document.getElementsByClassName("card");
+
+    // Menambahkan event listener ke setiap card
+    for (var i = 0; i < cards.length; i++) {
+        cards[i].addEventListener('click', function() {
+            // Teks/details dan tautan berdasarkan kartu yang diklik
+            switch(this.id) {
+                case "lembar-asa":
+                    modalText.innerHTML = "LiteraHub memberikan kesempatan untuk membagikan karya tulis terbaik Anda kepada dunia. Dengan membagikannya kepada publik, karya tulis Anda menjadi lebih berarti dan bermanfaat. Selamat menulis dan berbagi!";
+                    modalButton.onclick = function() { window.location.href = "/lembar-asa/"; };
+                    break;
+                case "peminjaman-buku":
+                    modalText.innerHTML = "Ayo mulai baca dan segera pinjam berbagai buku yang Anda sukai!";
+                    modalButton.onclick = function() { window.location.href = "/peminjaman-buku/"; };
+                    break;
+                case "reservasi":
+                    modalText.innerHTML = "LiteraHub menyediakan tempat untuk Anda dapat membaca dan menikmati buku dengan tenang. Ayo membaca bersama di LiterHub!";
+                    modalButton.onclick = function() { window.location.href = "/reservasi/"; };
+                    break;
+            }
+            
+            // Menampilkan pop up
+            popup.style.display = "block";
+        });
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+
+    // Ketika close ("x") diklik, pop up ditutup
+    span.onclick = function() {
+      popup.style.display = "none";
+    }
+</script>
+{% endblock content %}

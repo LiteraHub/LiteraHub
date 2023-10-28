@@ -1,0 +1,26 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'src/styles.css' %}">
+    <script>
+
+    </script>
+    {% block meta %} {% endblock meta %}
+</head>
+
+<body style="background-color: #f2eee3;">
+    {% block navbar %}
+    {% include 'header.html' %}
+    {% endblock navbar %}
+
+    {% block content %} {% endblock content %}
+
+    {% include 'footer.html' %}
+
+</body>
+
+</html>
