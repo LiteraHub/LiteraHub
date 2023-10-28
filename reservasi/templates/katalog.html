@@ -9,28 +9,53 @@
      }
 
      .buku-card {
-          border: 1px solid #ccc;
+          border: 1px solid #7a7676;
           margin: 10px;
-          padding: 10px;
+          padding: 20px;
           flex-basis: calc(33.33% - 20px);
+          display:block;
+          justify-content: center;
      }
 
      .buku-card img {
           width: auto;
           height: auto;
      }
+
+     h1 {
+          text-align: center;
+          font-size: larger;
+          margin-top: 20px;
+          margin-bottom: 15px;
+     }
+
+     #button-back {
+          margin-left: 20px;
+          border: 1px solid rgb(145, 141, 141);
+          padding: 10px;
+          border-radius: 10px;
+     }
 </style>
 
-<h1>Katalog Buku</h1>
+<h1><b>Katalog Buku</b></h1>
+
+<button id="button-back" onclick="goBack()" style="margin-top: 15px;">Go Back</button>
 
 <div class="katalog">
      {% for buku in daftar_buku %}
      <div class="buku-card">
           <img src="{{ buku.img }}" alt="{{ buku.title }}">
-          <h2>{{ buku.title }}</h2>
+          <h2><b>{{ buku.title }}</b></h2>
           <p>{{ buku.author }}</p>
-          <a href="{% url 'reservasi:buat_reservasi' %}?buku_id={{ buku.id }}">Pilih Buku Ini</a>
      </div>
      {% endfor %}
 </div>
+
+<button id="button-back" onclick="goBack()">Go Back</button>
+
+<script>
+     function goBack() {
+          window.history.back();
+     }
+</script>
 {% endblock %}

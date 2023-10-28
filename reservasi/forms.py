@@ -4,4 +4,4 @@ from .models import Reservasi
 class ReservasiForm(ModelForm):
      class Meta:
           model = Reservasi
-          fields = ['nama', 'no_hp', 'buku', 'tempat_baca', 'durasi_baca']
+          fields = ['nama', 'no_hp', 'buku', 'tempat_baca', 'tanggal', 'jam', 'durasi_baca']
