@@ -52,6 +52,8 @@
         <h1 class="text-2xl" style="margin-top: 30px; margin-bottom: 5px;">
             Buku Tersedia
         </h1>
+        <label for="searchInput">Cari Buku:</label>
+        <input type="text" id="searchInput" onkeyup="refreshItem()">
         <h1 class="text-1xl" style="margin-bottom: 30px;">
             Click gambar untuk meminjam!
         </h1>
@@ -60,6 +62,14 @@
 </div>
 
 <script>
+    var searchInput = document.getElementById("searchInput");
+    
+    searchInput.addEventListener("input", function () {
+        if (searchInput.value === "") {
+            refreshItem();
+        }
+    });
+
     let bookId
     async function getAll() {
         return fetch("{% url 'peminjamanbuku:get_buku_json' %}").then((res) => res.json())
@@ -76,18 +86,22 @@
 
     async function refreshItem() {
         document.getElementById("product_table").innerHTML = ""
+        var kataKunci = document.getElementById("searchInput").value.toLowerCase();
         let all = await getAll()
         let htmlString = ""
         all.forEach((item) => {
+            if(!item.fields.title.toLowerCase().includes(kataKunci) && kataKunci != ""){
+                return;
+            }
             htmlString += `
-                <div class="card">
-                    <div class="card-body">
-                        <button onclick="openForm(${item.pk})" class="modal-link">
-                            <img for="modal-pinjem" src="${item.fields.img}" style="object-fit: contain; width: 100%; height: 100%;">
+            <div class="card">
+                <div class="card-body">
+                    <button onclick="openForm(${item.pk})" class="modal-link">
+                        <img for="modal-pinjem" src="${item.fields.img}" style="object-fit: contain; width: 100%; height: 100%;">
                         </button>
                         </div>
                         <label class="text-sm">${item.fields.title}</label>
-                </div>` 
+                        </div>` 
         })
 
         document.getElementById("product_table").innerHTML = htmlString
@@ -125,7 +139,6 @@
     function pinjamBuku() {
         let formData = new FormData(document.getElementById('pinjamForm'));
         formData.append('bookId', bookId);
-        console.log(formData)
         closeModal()
 
         fetch("{% url 'peminjamanbuku:pinjam_buku' %}", {
