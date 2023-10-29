@@ -1,0 +1,354 @@
+<head> 
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+J4jsl5c9zdLKaUk5Ae5f5b1bw6AUn5f5v8FZJoMxm6f5cH1" crossorigin="anonymous"></script>
+     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+     .main-container {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          height: 60vh; 
+          background-color: rgba(88, 87, 87, 0.1); 
+          margin-top: 20px;
+          margin-left: 20px;
+          margin-right: 20px;
+          border-radius: 10px;
+          padding: 20px;
+          color: black;
+     }
+
+     .form-container {
+          background-color: rgba(45, 45, 45, 0.1); 
+          margin-top: 30px;
+          margin-bottom: 10px;
+          margin-left: 80px;
+          margin-right: 80px;
+          padding: 50px;
+          border-radius: 10px;
+
+     }
+
+     h2 {
+          margin-top: 30px;
+          text-align: center;
+     }
+
+     #lihat-katalog-buku {
+          margin-top: 10px;
+     }
+
+     .form-control{
+          max-width: 800px;
+     }
+
+     .footer {
+          display: flex;
+          justify-content: center;
+     }
+
+     .footer button {
+          margin: 0 10px; 
+     }
+
+     .col-form-label {
+          font-size: large;
+     }
+
+     .katalog {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-around;
+     }
+
+     .buku-card {
+          border: 1px solid #ccc;
+          margin: 10px;
+          padding: 10px;
+          flex-basis: calc(33.33% - 20px);
+     }
+
+     .buku-card img {
+          width: auto;
+          height: auto;
+     }
+
+     #table-reservasi {
+          border-collapse: collapse;
+          margin-top: 15px;
+          margin-left: 20px;
+          margin-right: 20px;
+          display:flex;
+          justify-content: center;
+          overflow-y: auto; /* Tambahkan overflow-y: auto; untuk membuatnya scrollable */
+           max-height: 300px; 
+     }
+
+     #history-label {
+          margin-left: 20px;
+          margin-top: 30px;
+          text-align: center;
+     }
+
+     #table-reservasi td, #table-reservasi th {
+        width: 100px;
+        height: 50px;
+        border: 1px solid black;
+        text-align: center;
+     }
+
+     #select-tempat, #jam, #tanggal, #nama, #no_hp{
+          border: 1px solid black;
+          border-radius: 5px;
+          padding: 10px;
+     }
+
+     .footer {
+          margin-bottom: 20px;
+     }
+
+     #select-buku {
+          width: 450px; 
+          border: 1px solid black;
+          border-radius: 5px;
+          padding: 10px;
+     }
+
+     #select-buku option {
+          width: 450px; 
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+     }
+
+
+</style>
+<div style="padding-bottom: 200px;">
+     <div class="main-container">
+          <h3 style="font-size: larger;"><b>Kamu Ingin Membaca Bersama di LiteraHub?</b></h3>
+          <br/>
+          <h4 style="font-size: large;"><b>Ayo segera reservasi tempat bacamu!</b></h4>
+          <br>
+
+          <button id="reservasi-button" type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"><b>
+               Reservasi Disini
+          </b></button>
+     </div>
+
+     <div id="history-label">
+          <h3><b>History Reservasi</b></h3>
+          <p style="margin-top: 10px;">User: <b>{{nama}}</b></p>
+     </div>
+     <table id="table-reservasi"></table>
+
+     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+               <div class="modal-content">
+                    <div class="modal-header">
+                         <h1 class="modal-title fs-5" id="exampleModalLabel"><b>Formulir Reservasi</b></h1>
+                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                         <form id="form" onsubmit="return false;">
+                              {% csrf_token %}
+                              <div class="mb-3">
+                                   <label for="nama" class="col-form-label"><b>Nama</b></label>
+                                   <input type="text" class="form-control" id="nama" name="nama" maxlength="50"></input>
+                              </div>
+                              <div class="mb-3">
+                                   <label for="no_hp" class="col-form-label"><b>Nomor Ponsel</b></label>
+                                   <input type="text" class="form-control" id="no_hp" name="no_hp" maxlength="14" oninput="this.value = this.value.replace(/[^0-9]/g,'');"></input>
+                              </div>
+                              <div class="mb-3">
+                                   <label for="buku" class="col-form-label"><b>Buku</b></label>
+                                   <select class="form-check" id="select-buku" name="buku">
+                                        <option value="" disabled selected>Pilih Buku Disini</option>
+                                   </select>
+                                   <a href="{% url 'reservasi:katalog' %}">
+                                        <button type="button" class="btn btn-outline-primary" style="margin-top: 10px;"><b>
+                                             Lihat Katalog Buku
+                                        </b></button>  
+                                   </a>
+                              </div>
+                              <div class="mb-3">
+                                   <label for="tanggal" class="col-form-label"><b>Tanggal</b></label><br>
+                                   <input type="date" id="tanggal" name="tanggal">
+                              </div>
+                              <div class="mb-3">
+                                   <label for="jam" class="col-form-label"><b>Jam Mulai</b></label><br>
+                                   <input type="time" id="jam" name="jam">
+                              </div>
+                              <div class="mb-3">
+                                   <label for="durasi_baca" class="col-form-label"><b>Durasi</b></label><br>
+                                   <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="durasi1" name="durasi_baca" value="1">
+                                        <label class="form-check-label" for="durasi1">1 Jam</label>
+                                   </div>
+                                   <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="durasi2" name="durasi_baca" value="2">
+                                        <label class="form-check-label" for="durasi2">2 Jam</label>
+                                   </div>
+                                   <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="durasi3" name="durasi_baca" value="3">
+                                        <label class="form-check-label" for="durasi3">3 Jam</label>
+                                   </div>
+                                   <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="durasi4" name="durasi_baca" value="4">
+                                        <label class="form-check-label" for="durasi4">4 Jam</label>
+                                   </div>
+                                   <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="durasi5" name="durasi_baca" value="5">
+                                        <label class="form-check-label" for="durasi5">5 Jam</label>
+                                   </div>
+                              </div>
+                              <div class="mb-3" id="dropdown-tempat-baca">
+                                   <label for="tempat_baca" class="col-form-label"><b>Tempat Baca</b></label><br>
+                                   <select class="form-check" id="select-tempat" name="tempat_baca">
+                                        <option value="" disabled selected>------</option>
+                                   </select>
+                              </div>
+                         </form>
+                    </div>
+                    <div class="footer">
+                         <button type="button" class="btn btn-outline-primary" id="submit-reservasi"><b>Submit</b></button>
+                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+               </div>
+          </div>
+     </div>
+</div>
+
+<script>
+     $(document).ready(function() {
+          $.ajax({
+               url: '/reservasi/get-tempat-baca',
+               type: 'get',
+               dataType: 'json',
+               success: function(data) {
+                    var tempatBacaData = data;
+                    $.each(tempatBacaData, function(key, tempatBaca) {
+                         var option = new Option(tempatBaca.fields.id_tempat, tempatBaca.pk);
+                         $(option).html("Tempat Baca - " + tempatBaca.fields.id_tempat);
+                         $("#select-tempat").append(option);
+                    });
+               }
+          });
+     });
+
+     $(document).ready(function() {
+          $.ajax({
+               url: '/reservasi/get-buku-json',
+               type: 'get',
+               dataType: 'json',
+               success: function(data) {
+                    var bukuData = data;
+                    $.each(bukuData, function(key, buku) {
+                         var option = new Option(buku.fields.title, buku.pk);
+                         $(option).html(buku.fields.title);
+                         $("#select-buku").append(option);
+                    });
+               }
+          });
+     });
+
+     async function getReservasi() {
+          return fetch("{% url 'reservasi:get_reservasi_json' %}").then((res) => res.json())
+     }
+
+     async function refreshReservasi() {
+          document.getElementById("table-reservasi").innerHTML = ""
+          const reservasiDibuat = await getReservasi()
+          let htmlString = `
+          <tr>
+               <th>Tanggal</th>
+               <th>Pukul</th>
+               <th>Durasi (Jam)</th>
+               <th>Buku (ID)</th>
+               <th>Tempat Baca</th>
+               <th>Status</th>
+               <th></th>
+          </tr>`
+          reservasiDibuat.forEach((reservasi) => {
+               let status = reservasi.fields.selesai ? "Selesai" : "Belum Selesai";
+               htmlString += `
+               <tr>
+                    <td>${reservasi.fields.tanggal}</td>
+                    <td>${reservasi.fields.jam}</td>
+                    <td>${reservasi.fields.durasi_baca}</td>
+                    <td>${reservasi.fields.buku}</td>
+                    <td>${reservasi.fields.tempat_baca}</td>
+                    <td>${status}</td>
+                    <td>
+                         <div class="button">
+                              <button type="button" class="btn btn-outline-danger" onclick="selesai(${reservasi.pk})">Selesai</button>
+                         </div>
+                    </td>
+               </tr>`
+          })
+          
+          document.getElementById("table-reservasi").innerHTML = htmlString
+     }
+     refreshReservasi()
+
+     function buatReservasi() {
+          fetch("{% url 'reservasi:buat_reservasi' %}", {
+               method: "POST",
+               body: new FormData(document.querySelector('#form'))
+          }).then(() => {
+               refreshReservasi();
+               document.getElementById("form").reset();
+
+               fetch("{% url 'reservasi:get_buku_json' %}")
+                    .then(response => response.json())
+                    .then(data => {
+                         const selectElement = document.getElementById('select-buku');
+                         selectElement.innerHTML = `<option value="" disabled selected>Pilih Buku Disini</option>` + 
+                         data.map(option => `<option value="${option.pk}">${option.fields.title}</option>`).join('');
+                    });
+               
+               fetch("{% url 'reservasi:get_tempat_baca' %}")
+                    .then(response => response.json())
+                    .then(data => {
+                         const selectElement = document.getElementById('select-tempat');
+                         selectElement.innerHTML = `<option value="" disabled selected>------</option>` +
+                         data.map(option => `<option value="${option.pk}">Tempat Baca - ${option.fields.id_tempat}</option>`).join('');
+                    });
+          });
+
+     }
+
+     function selesai(reservasi_id) {
+          fetch(`selesai/${reservasi_id}`, {
+               method: "POST",
+          }).then(() => {
+               refreshReservasi();
+
+               fetch("{% url 'reservasi:get_buku_json' %}")
+                    .then(response => response.json())
+                    .then(data => {
+                         const selectElement = document.getElementById('select-buku');
+                         selectElement.innerHTML = `<option value="" disabled selected>Pilih Buku Disini</option>`+
+                         data.map(option => `<option value="${option.pk}">${option.fields.title}</option>`).join('');
+                    });
+               
+               fetch("{% url 'reservasi:get_tempat_baca' %}")
+                    .then(response => response.json())
+                    .then(data => {
+                         const selectElement = document.getElementById('select-tempat');
+                         selectElement.innerHTML = `<option value="" disabled selected>------</option>`+
+                         data.map(option => `<option value="${option.pk}">Tempat Baca - ${option.fields.id_tempat}</option>`).join('');
+                    });
+          })
+     }
+
+     document.getElementById("submit-reservasi").onclick = buatReservasi
+</script>
+
+{% endblock content %}

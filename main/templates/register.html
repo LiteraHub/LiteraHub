@@ -1,0 +1,33 @@
+{% extends 'base.html' %} 
+
+{% block meta %} 
+<title>Register</title>
+{% endblock meta %}
+
+{% block content %}
+     <div class = "login">
+          
+          <form method="POST" >  
+               {% csrf_token %}  
+               <table> 
+                    <tr>
+                         <td class="text-center">Register</td>  
+                    </tr> 
+                    {{ form.as_table }}  
+                    <tr>  
+                         <td></td>
+                         <td><input class="btn bg-amber-800 rounded-lg px-4 py-2" type="submit" name="submit" value="Daftar"/></td>  
+                    </tr>  
+               </table>  
+          </form>
+          
+          {% if messages %}  
+          <ul>   
+               {% for message in messages %}  
+               <li>{{ message }}</li>  
+               {% endfor %}  
+          </ul>   
+          {% endif %}
+          
+     </div> 
+{% endblock content %}
