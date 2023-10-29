@@ -1,15 +1,25 @@
+async function getBuku() {
+    return fetch("/forum/get_books_json").then((res) => res.json())
+}
+
 async function getThreads() {
     return fetch("/forum/get_threads").then((res) => res.json())
 }
 
+async function getTitle(judul) {
+    let url = "/forum/get_buku_title/${judul}";
+    return fetch(url).then((res) => res.json())
+}
 async function refreshThreads() {
     document.getElementById("forum-forum").innerHTML = "";
     const threads = await getThreads();
     let htmlString = "";
-    threads.forEach((thread) => {
+    threads.forEach(async (thread) => {
+        let judul = thread.fields.name;
+        let buku = await getTitle(judul);
         htmlString += `
             <div class="thread-panel">
-            <img src="${thread.book_cover}" alt="Book Cover">
+            <img src="${buku.book_cover}" alt="Book Cover">
             <p><a href="/forum/threads">${thread.fields.name}</a></p>
             <p>${thread.author}</p>
             <p>${thread.post_amount}</p>

@@ -112,5 +112,15 @@ def get_books_json(request):
     books = Buku.objects.all()
     return HttpResponse(serializers.serialize('json', books), content_type="application/json")
 
+def get_spesifik(request,judul):
+    buku = Buku.objects.get(title=judul)    
+    mybuku = MyBuku.objects.get(buku = buku_cari)
+    mybuku_list = [mybuku]
+    return HttpResponse(serializers.serialize('json', mybuku_list))
+
+def get_buku_title(request, judul):
+    buku = Buku.objects.filter(title=judul).values_list('buku')
+    return HttpResponse(serializers.serialize('json', buku))
+
 def get_time(request):
     return str(datetime.datetime.now())
