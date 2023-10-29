@@ -18,7 +18,8 @@ def show_peminjaman(request):
     context = {
         'dataReady': dataReady,
         'dataPinjam': dataPinjam,
-        'form' : form
+        'form' : form,
+        'last_login' : request.COOKIES["last_login"][:-10] if "last_login" in request.COOKIES else "",
     }
 
     return render(request, 'pinjam.html', context)
@@ -78,3 +79,7 @@ def get_buku_json(request):
 def get_buku_by_id(request, id):
     bukuDicari = Buku.objects.filter(pk=id)
     return HttpResponse(serializers.serialize('json', bukuDicari))
+
+def get_objek_by_id(request, id):
+    pinjamDicari = PeminjamanBuku.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize('json', pinjamDicari))
