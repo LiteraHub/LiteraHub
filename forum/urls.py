@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from forum.views import show_forum, add_post, add_thread, trending, writer, explore, to_thread, get_threads, get_books_json, get_post, get_time
+from forum.views import show_forum, add_post, add_thread, trending, writer, explore, to_thread, get_threads, get_books_json, get_post, get_time, get_buku_title
 
 app_name = 'forum'
 
@@ -16,4 +16,5 @@ urlpatterns = [
     path('get_books_json/', get_books_json, name='get_books_json'),
     path('get_post/', views.get_post, name='get_post'),
     path('get_time/', get_time, name='get_time'),
+    path('get_buku_title/', get_buku_title, name='get_buku_title'),
 ]
