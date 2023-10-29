@@ -1,0 +1,173 @@
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+J4jsl5c9zdLKaUk5Ae5f5b1bw6AUn5f5v8FZJoMxm6f5cH1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <style>
+        
+    </style>
+</head>
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container" style="padding-top: 10px;">
+        <div style="text-align: center;" class="p-4">
+            <p class="fs-1 fw-bolder p-2">Halo, {{user}}!</p>
+            <p class="fs-6 fw-medium text-muted">Karya unikmu, dunia digital kami</p>
+            <p class="fs-6 fw-medium text-muted">Unggah bukumu dan biarkan semua orang terinspirasi</p>
+        </div>
+
+        <!-- Button trigger modal input-->
+        <div class="mx-auto p-2" style="width: 146px;">
+            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#inputModal">
+                Mulai Berkarya
+            </button>
+        </div>
+        
+        <!-- Modal untuk Input -->
+        <div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg">
+                <div class="modal-content" style="background-color: #f2eee3;">
+                    <!-- <div class="modal-header">
+                        <h1 class="modal-title fs-5 fw-medium" id="inputModalLabel">Buat Karyamu</h1>
+                    </div> -->
+                    <div class="modal-body">
+                        <form id="form" onsubmit="return false;">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="judul" class="col-form-label">Judul:</label>
+                                <div>
+                                    {{form_buku.title}}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="img" class="col-form-label">Tautan gambar:</label>
+                                <div>
+                                    {{form_buku.img}} 
+                                </div> 
+                            </div>
+                            <div class="mb-3">
+                                <label for="isi" class="col-form-label">Karyamu:</label>
+                                <div>
+                                    {{form_mybuku.isi}}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Tutup</button>
+                        <button type="button" class="btn btn-outline-success" id="button_add" data-bs-dismiss="modal">Tambah karya</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card -->
+        <div class="row row-cols-3 row-cols-md-4 g-5 pt-5" id="card_buku"></div>
+
+        <!-- Modal untuk lihat isi buku -->
+        <div class="modal fade" id="modal_isi" tabindex="-1" aria-labelledby="modalIsiLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                <div class="modal-content" style="background-color: #f2eee3;">
+                    <div class="modal-body">
+                        <div style="text-align: center;" class="fs-4 fw-medium p-4">
+                            <p id="modal_judul">Judul</p>
+                        </div>
+                        <div class="container">
+                            <div id="modal_content"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Tutup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const elementIds = ["id_title", "id_img", "id_isi"];
+        for (const id of elementIds) {
+            const element = document.getElementById(id);           
+            if (element) {
+                element.removeAttribute("rows");
+                element.removeAttribute("cols");
+                element.setAttribute("class", "form-control");
+
+                if (id === "id_isi") {
+                    element.setAttribute("rows", "10");
+                }
+            }
+        }
+
+        async function getBuku() {
+            return fetch("{% url 'lembarasa:get_buku_json' %}").then((res) => res.json())
+        }
+
+        async function refreshBuku() {
+            document.getElementById("card_buku").innerHTML = ""
+            const buku = await getBuku()
+            let htmlString = ``
+            buku.forEach((satu_buku) => {
+                htmlString += `\n<div class="col">
+                <div class="card h-100">
+                    <img src= ${satu_buku.fields.img} class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <p class="card-title fs-5 fw-semibold">${satu_buku.fields.title}</p>
+                        <p class="card-text">${satu_buku.fields.author}</p>
+                        <p class="card-text">${satu_buku.fields.year}</p>
+                    </div>
+                    <div class="p-3">
+                        <button class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#modal_isi" onclick = "modalIsi(${satu_buku.pk}); modalJudul('${satu_buku.fields.title}')">Lihat</button>
+                        <button class="btn btn-outline-danger btn-sm" onclick="deleteBuku(${satu_buku.pk})">Hapus</button>
+                    </div>
+                </div>
+            </div>` 
+            })
+            
+            document.getElementById("card_buku").innerHTML = htmlString
+        }
+
+        async function getMyBuku(id) {
+            return fetch(`get-mybuku-id/${id}/`).then((res) => res.json())
+        }
+
+        async function modalIsi(id) {
+            const modalContent = document.getElementById("modal_content")
+            modalContent.innerHTML = ""
+
+            const mybuku = await getMyBuku(id)
+            if (mybuku) {
+                const content = mybuku[0].fields.isi
+
+                const contentElement = document.createElement("div")
+                contentElement.innerHTML = content
+
+                modalContent.appendChild(contentElement)
+            }
+        }
+
+        async function modalJudul(title) {
+            const judul = title
+            document.getElementById("modal_judul").innerHTML = judul
+        }
+
+        refreshBuku()
+
+        function addBuku() {
+            fetch("{% url 'lembarasa:create_ajax' %}", {
+                method: "POST",
+                body: new FormData(document.querySelector('#form'))
+            }).then(refreshBuku)
+
+            document.getElementById("form").reset()
+            return false
+        }
+
+        document.getElementById("button_add").onclick = addBuku
+
+        function deleteBuku(id) {
+            fetch(`delete-ajax/${id}/`).then(refreshBuku);
+        }
+    </script>
+{% endblock content %}
