@@ -1,0 +1,38 @@
+.card.scale-up:hover {
+  transform: scale(1.05); /* Ubah faktor skala sesuai kebutuhan */
+  transition: transform 0.3s ease; /* Durasi dan jenis transisi (optional) */
+  background-color: #e2c171;
+}
+
+.right-side {
+  position: absolute;
+  margin-top: 1.5rem;
+  right: -100%;
+  background-color: #e2c171;
+}
+
+.right-side.active {
+  right: 0;
+}
+
+.row.parentcard {
+  justify-content: center;
+}
+
+.row.parentcard.active {
+  justify-content: flex-start;
+}
+
+.container.mt-4 {
+  background-color: #f2eee3;
+}
+
+.container.mt-4.active {
+  margin-left: 0;
+}
+
+@media screen (max-width: 500px) {
+  .right-side {
+    width: 100%;
+  }
+}
