@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+    <title>Daftar Buku</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static "css/daftarbuku.css" %}">
+{% endblock meta %}
+
+{% block content %}
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <h1 style="justify-content: center;">Explore Books</h1>
+    </div>
+    <form action="" class="d-flex">
+        <input type="search" placeholder="Type title book" id="titlebook" class="form-control me-2" name="title">
+        <input type="search" placeholder="Type author name" id="authorbook" class="form-control me-2" name="author">
+        <input type="search" placeholder="Type year book" id="yearbook" class="form-control me-2" name="yearbook">
+        <button class="btn btn-outline-info" type="submit">Search</button>
+    </form>
+
+    <div class="right-side" style="border-radius: 1%;  z-index: 9999; width: 34%; background-color: #e2c171;">
+        <div style="background-color: #e2c171; display: flex;" id="cardright">
+            <img src="http://images.amazon.com/images/P/0195153448.01.MZZZZZZZ.jpg" class="imgrightside" alt="" style="width: 100%;">
+            <div style="margin-left: 1rem; margin-top: 1rem; background-color: #e2c171; width: 10%;">
+                <h3>JUDUL</h3><br>
+                <h7>AUTHOR</h7><br><br>
+                <h7>YEAR</h7><br><br>
+                <h7>ISBN</h7>
+            </div>
+        </div>
+
+        <div>
+            <h5 style="background-color: #f2eee3; margin-left: 2rem; margin-top: 1rem; margin-right: 2rem">Review Book</h5>
+            <div style="background-color: #f2eee3; margin-left: 2rem; margin-right: 2rem; height: 17rem; overflow: auto;" id="reviewbook">
+                <h6 style="margin-left: 0.5rem;">@NAMA ORANG<span style="margin-left: 10px;">haloo</span></h6>
+                <div style="background-color: #f2eee3; margin-left: 1.5rem; width: 90%;">
+                    <p>Belum ada review
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3" style="margin-left: 2rem; margin-right: 2rem; margin-top: 1rem;">
+            <label for="review" class="form-label">Your Review</label>
+            <form id="form" onsubmit="return false;" method="POST">
+                {% csrf_token %}
+                {{review_form.as_table}}
+            </form>
+            <button type="button" name="" id="button_addreview" style="background-color: #f2eee3; margin-top: 0.5rem;">Add Review</button>
+        </div>
+
+        <button type="button" class="btn btn-primary btn-lg btn-block closerightside" style="width: 100%; position: absolute; bottom: 0;">Close</button>
+    </div>
+
+    <div class="container mt-4" style="background-color: #f2eee3;">
+        <div class="row parentcard">
+            {% for buku in data %}
+            <div class="card scale-up" style="width: 13rem; margin: 1rem 1rem 1rem 0rem; height: 19rem;">
+                <span id="pkbuku" class="d-none">{{buku.pk}}</span>
+                <img src="{{ buku.img }}" class="card-img-top" alt="..." style="height: 15rem;">
+                <h5 class="card-title text-center overflow-hidden whitespace-nowrap text-ellipsis" style="font-size: 1rem; margin-top: 1rem; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical;" id="title">{{ buku.title }}</h5>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="d-none">
+        <span id="value-csrf-token">{% csrf_token %}</span>
+    </div>
+    
+    <script src="{% static 'js/daftarbuku.js' %}"></script>
+
+{% endblock content %}
