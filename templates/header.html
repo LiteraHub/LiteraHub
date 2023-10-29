@@ -27,10 +27,10 @@
         
         <div class="navbar-collapse collapse show" id="navbarsExample04">
             <ul class="navbar-nav me-auto mb-2 mb-md-0 justify-content-md-end">
-                <li class="p-1"><a class="nav-link active text-muted" href="#">LembarAsa</a></li>
+                <li class="p-1"><a class="nav-link active text-muted" href="{% url 'lembarasa:show_lembarasa' %}">LembarAsa</a></li>
                 <li class="p-1"><a class="nav-link active text-muted" href="#">Forum</a></li>
                 <li class="p-1"><a class="nav-link active text-muted" href="#">Daftar Buku</a></li>
-                <li class="p-1"><a class="nav-link active text-muted" href="#">Peminjaman</a></li>
+                <li class="p-1"><a class="nav-link active text-muted" href="{% url 'peminjamanbuku:show_peminjaman' %}">Peminjaman</a></li>
                 <li class="p-1"><a class="nav-link active text-muted" href="#">Reservasi</a></li>
                 {% if user.is_authenticated %}
                 <li class="p-1"><a class="nav-link active text-muted" href="{% url 'main:logout' %}">Logout</a></li>
