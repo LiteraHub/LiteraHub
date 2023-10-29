@@ -5,10 +5,10 @@
         </div>
     </header>
     <div class="sidebar-container">
-        <button class="sidebar-arrow">
+        <button class="sidebar-arrow" id="arrow-button">
             <p><i class="arrow right"></i></p>
         </button>
-        <div class="sidebar">
+        <div class="sidebar" id="sidebar">
             <a href="">Rekomendasi Buku</a>
             <a href="">Trending Forums</a>
             <a href="">Recent Forums</a>
@@ -16,9 +16,17 @@
         </div>
     </div>
     <script>
-        document.getElementById("sidebar-arrow").addEventListener("click", function() {
-            var sidebar = document.querySelector(".sidebar");
-            sidebar.style.width = sidebar.style.width === "250px" ? "0" : "250px";
-        });
+        function toggleSidebar() {
+            var sidebar = document.getElementById("sidebar");
+            var mainContent = document.getElementById("content");
+          
+            if (sidebar.style.width === "250px") {
+              sidebar.style.width = "0";
+              mainContent.style.marginLeft = "0";
+            } else {
+              sidebar.style.width = "250px";
+              mainContent.style.marginLeft = "250px";
+            }
+          }
     </script>
 {% endblock content %}

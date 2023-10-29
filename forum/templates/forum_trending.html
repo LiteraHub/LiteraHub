@@ -5,16 +5,16 @@
         <div class="forum-container">
             <h1 class="forum-title">FORUMS</h1>
             <div class="link-container">
-                <a class="to-forum" href="">Rekomendasi Buku</a>
-                <a class="to-forum" href="{% url 'forum:forum_trending' %}">Forum Trending</a>
+                <a class="to-forum" href="{% url 'forum:show_forum' %}">Rekomendasi Buku</a>
+                <a class="to-forum" href="">Forum Trending</a>
                 <a class="to-forum" href="{% url 'forum:forum_writers' %}">Forum Penulis</a>
                 <a class="to-forum" href="{% url 'forum:forum_explore' %}">Eksplorasi</a>
             </div>
             <div class="forum-header">
-                <h2 id="forum-text">Rekomendasi Buku</h2>
-                <p id="basic-text">Tempat rekomendasi dan mencari rekomendasi buku</p>
+                <h2 id="forum-text">Forum Trending</h2>
+                <p id="basic-text">Mau cari forum yang penuh diskusi? Tempatnya disini!</p>
             </div>
-            <div class="thread-container" id="forum-forum">
+            <div class="thread-container" id="all-forum">
             </div>
             <form id="thread-form" class="fixed-form" method="post" onsubmit="return false">
                 {% csrf_token %}
