@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div id="content">
+        <h1 class="forum-title">FORUMS</h1>
+        <div class="link-container">
+            <a class="to-forum" href="{% url 'forum:show_forum' %}">Rekomendasi Buku</a>
+            <a class="to-forum" href="{% url 'forum:forum_trending' %}">Forum Trending</a>
+            <a class="to-forum" href="{% url 'forum:forum_writers' %}">Forum Penulis</a>
+            <a class="to-forum" href="{% url 'forum:forum_explore' %}">Eksplorasi</a>
+        </div>
+        <div class="post-container" id="post-post">
+        </div>
+        <div class="post-form">
+            <form id="post-form" method="post">
+                {% csrf_token %}
+                <input type="text" id="post-body" class="form-control" placeholder="Isi">
+                <button type="submit" id="submit-post" class="btn btn-primary">Post</button>
+            </form>
+        </div>
+        <script src='/static/forum/forum.js'></script>
+{% endblock %}
