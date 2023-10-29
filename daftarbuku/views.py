@@ -37,8 +37,6 @@ def choosebook(request):
     print(books)
     book = get_object_or_404(Buku, pk=id)
     review_list = Review.objects.filter(book=book)
-    print("review_list = ")
-    print(review_list)
     book_list = []
     for buku in books:
         book_json = {
@@ -52,15 +50,13 @@ def choosebook(request):
     for review in review_list:
         review_json = {
             'user': {
-                'id': review.user.id,
-                'name': review.user.username,
+                'name': request.user.username,
             },
             'id': review.id,
             'review': review.review,
             'created_at': review.created_at,
         }
         book_list.append(review_json)
-    print(book_list)
     return JsonResponse(book_list, safe=False)
 
 
@@ -73,6 +69,7 @@ def post_book_review(request, id):
     form = ReviewForm(request.POST)
     print(form.is_valid())
     if form.is_valid():
+        print("test")
         review = form.save(commit=False)
         review.book = book
         print(review.book)
@@ -81,8 +78,7 @@ def post_book_review(request, id):
         review.save()
         review_json = {
             'user': {
-                'id': review.user.id,
-                'name': review.user.username,
+                'name': request.user.username,
             },
             'id': review.id,
             'review': review.review,

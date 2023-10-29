@@ -87,6 +87,8 @@
           margin-right: 20px;
           display:flex;
           justify-content: center;
+          overflow-y: auto; /* Tambahkan overflow-y: auto; untuk membuatnya scrollable */
+           max-height: 300px; 
      }
 
      #history-label {
@@ -128,95 +130,96 @@
 
 
 </style>
+<div style="padding-bottom: 200px;">
+     <div class="main-container">
+          <h3 style="font-size: larger;"><b>Kamu Ingin Membaca Bersama di LiteraHub?</b></h3>
+          <br/>
+          <h4 style="font-size: large;"><b>Ayo segera reservasi tempat bacamu!</b></h4>
+          <br>
 
-<div class="main-container">
-     <h3 style="font-size: larger;"><b>Kamu Ingin Membaca Bersama di LiteraHub?</b></h3>
-     <br/>
-     <h4 style="font-size: large;"><b>Ayo segera reservasi tempat bacamu!</b></h4>
-     <br>
+          <button id="reservasi-button" type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"><b>
+               Reservasi Disini
+          </b></button>
+     </div>
 
-     <button id="reservasi-button" type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"><b>
-          Reservasi Disini
-     </b></button>
-</div>
+     <div id="history-label">
+          <h3><b>History Reservasi</b></h3>
+          <p style="margin-top: 10px;">User: <b>{{nama}}</b></p>
+     </div>
+     <table id="table-reservasi"></table>
 
-<div id="history-label">
-     <h3><b>History Reservasi</b></h3>
-     <p style="margin-top: 10px;">User: <b>{{nama}}</b></p>
-</div>
-<table id="table-reservasi"></table>
-
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-     <div class="modal-dialog">
-          <div class="modal-content">
-               <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel"><b>Formulir Reservasi</b></h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-               </div>
-               <div class="modal-body">
-                    <form id="form" onsubmit="return false;">
-                         {% csrf_token %}
-                         <div class="mb-3">
-                              <label for="nama" class="col-form-label"><b>Nama</b></label>
-                              <input type="text" class="form-control" id="nama" name="nama" maxlength="50"></input>
-                         </div>
-                         <div class="mb-3">
-                              <label for="no_hp" class="col-form-label"><b>Nomor Ponsel</b></label>
-                              <input type="text" class="form-control" id="no_hp" name="no_hp" maxlength="14" oninput="this.value = this.value.replace(/[^0-9]/g,'');"></input>
-                         </div>
-                         <div class="mb-3">
-                              <label for="buku" class="col-form-label"><b>Buku</b></label>
-                              <select class="form-check" id="select-buku" name="buku">
-                                   <option value="" disabled selected>Pilih Buku Disini</option>
-                              </select>
-                              <a href="{% url 'reservasi:katalog' %}">
-                                   <button type="button" class="btn btn-outline-primary" style="margin-top: 10px;"><b>
-                                        Lihat Katalog Buku
-                                   </b></button>  
-                              </a>
-                         </div>
-                         <div class="mb-3">
-                              <label for="tanggal" class="col-form-label"><b>Tanggal</b></label><br>
-                              <input type="date" id="tanggal" name="tanggal">
-                         </div>
-                         <div class="mb-3">
-                              <label for="jam" class="col-form-label"><b>Jam Mulai</b></label><br>
-                              <input type="time" id="jam" name="jam">
-                         </div>
-                         <div class="mb-3">
-                              <label for="durasi_baca" class="col-form-label"><b>Durasi</b></label><br>
-                              <div class="form-check">
-                                   <input type="radio" class="form-check-input" id="durasi1" name="durasi_baca" value="1">
-                                   <label class="form-check-label" for="durasi1">1 Jam</label>
+     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+               <div class="modal-content">
+                    <div class="modal-header">
+                         <h1 class="modal-title fs-5" id="exampleModalLabel"><b>Formulir Reservasi</b></h1>
+                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                         <form id="form" onsubmit="return false;">
+                              {% csrf_token %}
+                              <div class="mb-3">
+                                   <label for="nama" class="col-form-label"><b>Nama</b></label>
+                                   <input type="text" class="form-control" id="nama" name="nama" maxlength="50"></input>
                               </div>
-                              <div class="form-check">
-                                   <input type="radio" class="form-check-input" id="durasi2" name="durasi_baca" value="2">
-                                   <label class="form-check-label" for="durasi2">2 Jam</label>
+                              <div class="mb-3">
+                                   <label for="no_hp" class="col-form-label"><b>Nomor Ponsel</b></label>
+                                   <input type="text" class="form-control" id="no_hp" name="no_hp" maxlength="14" oninput="this.value = this.value.replace(/[^0-9]/g,'');"></input>
                               </div>
-                              <div class="form-check">
-                                   <input type="radio" class="form-check-input" id="durasi3" name="durasi_baca" value="3">
-                                   <label class="form-check-label" for="durasi3">3 Jam</label>
+                              <div class="mb-3">
+                                   <label for="buku" class="col-form-label"><b>Buku</b></label>
+                                   <select class="form-check" id="select-buku" name="buku">
+                                        <option value="" disabled selected>Pilih Buku Disini</option>
+                                   </select>
+                                   <a href="{% url 'reservasi:katalog' %}">
+                                        <button type="button" class="btn btn-outline-primary" style="margin-top: 10px;"><b>
+                                             Lihat Katalog Buku
+                                        </b></button>  
+                                   </a>
                               </div>
-                              <div class="form-check">
-                                   <input type="radio" class="form-check-input" id="durasi4" name="durasi_baca" value="4">
-                                   <label class="form-check-label" for="durasi4">4 Jam</label>
+                              <div class="mb-3">
+                                   <label for="tanggal" class="col-form-label"><b>Tanggal</b></label><br>
+                                   <input type="date" id="tanggal" name="tanggal">
                               </div>
-                              <div class="form-check">
-                                   <input type="radio" class="form-check-input" id="durasi5" name="durasi_baca" value="5">
-                                   <label class="form-check-label" for="durasi5">5 Jam</label>
+                              <div class="mb-3">
+                                   <label for="jam" class="col-form-label"><b>Jam Mulai</b></label><br>
+                                   <input type="time" id="jam" name="jam">
                               </div>
-                         </div>
-                         <div class="mb-3" id="dropdown-tempat-baca">
-                              <label for="tempat_baca" class="col-form-label"><b>Tempat Baca</b></label><br>
-                              <select class="form-check" id="select-tempat" name="tempat_baca">
-                                   <option value="" disabled selected>------</option>
-                              </select>
-                         </div>
-                    </form>
-               </div>
-               <div class="footer">
-                    <button type="button" class="btn btn-outline-primary" id="submit-reservasi"><b>Submit</b></button>
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                              <div class="mb-3">
+                                   <label for="durasi_baca" class="col-form-label"><b>Durasi</b></label><br>
+                                   <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="durasi1" name="durasi_baca" value="1">
+                                        <label class="form-check-label" for="durasi1">1 Jam</label>
+                                   </div>
+                                   <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="durasi2" name="durasi_baca" value="2">
+                                        <label class="form-check-label" for="durasi2">2 Jam</label>
+                                   </div>
+                                   <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="durasi3" name="durasi_baca" value="3">
+                                        <label class="form-check-label" for="durasi3">3 Jam</label>
+                                   </div>
+                                   <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="durasi4" name="durasi_baca" value="4">
+                                        <label class="form-check-label" for="durasi4">4 Jam</label>
+                                   </div>
+                                   <div class="form-check">
+                                        <input type="radio" class="form-check-input" id="durasi5" name="durasi_baca" value="5">
+                                        <label class="form-check-label" for="durasi5">5 Jam</label>
+                                   </div>
+                              </div>
+                              <div class="mb-3" id="dropdown-tempat-baca">
+                                   <label for="tempat_baca" class="col-form-label"><b>Tempat Baca</b></label><br>
+                                   <select class="form-check" id="select-tempat" name="tempat_baca">
+                                        <option value="" disabled selected>------</option>
+                                   </select>
+                              </div>
+                         </form>
+                    </div>
+                    <div class="footer">
+                         <button type="button" class="btn btn-outline-primary" id="submit-reservasi"><b>Submit</b></button>
+                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
                </div>
           </div>
      </div>
