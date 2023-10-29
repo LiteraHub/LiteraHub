@@ -8,50 +8,37 @@
             align-items: center;
             justify-content: space-between;
         }
-
-        ul, ol {
-            list-style: none;
-        }
-
-        .links li {
-            display: inline; 
-            margin-right: 20px; 
-            margin-left: 20px;
-        }
-
-        .links a {
-            font-size: 20px;
-            text-decoration: none;
-        }
-
-        .logo img {
-            width: 40px; 
-            margin: 0;
-        }
-
     </style>
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+J4jsl5c9zdLKaUk5Ae5f5b1bw6AUn5f5v8FZJoMxm6f5cH1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 </head>
-<nav class="bg-custom">
-    <div class="logo">
-        <img>
-        <a class ="text-3xl ml-7" href="{% url 'main:show_main' %}">
+
+<nav class="navbar navbar-expand-md">
+    <div class="container-fluid">
+        <a class ="navbar-brand ps-5 fw-bold" href="{% url 'main:show_main' %}">
             LiteraHub
         </a>
-    </div>
-    <div class="links">
-        <ul>
-            <li><a class="text-gray-800 hover:text-red-700" href="{% url 'lembarasa:show_lembarasa' %}">LembarAsa</a></li>
-            <li><a class="text-gray-800 hover:text-red-700" href="#">Forum</a></li>
-            <li><a class="text-gray-800 hover:text-red-700" href="#">Daftar Buku</a></li>
-            <li><a class="text-gray-800 hover:text-red-700" href="{% url 'peminjamanbuku:show_peminjaman' %}">Peminjaman</a></li>
-            <li><a class="text-gray-800 hover:text-red-700" href="#">Reservasi</a></li>
-            {% if user.is_authenticated %}
-            <li><a class="text-gray-800 hover:text-red-700" href="{% url 'main:logout' %}">Logout</a></li>
-            {% else %}
-            <li><a class="text-gray-800 hover:text-red-700" href="{% url 'main:login' %}">Login</a></li>
-            <li><a class="text-gray-800 hover:text-red-700" href="{% url 'main:register' %}">Register</a></li>
-            {% endif %}
-        </ul>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="navbar-collapse collapse show" id="navbarsExample04">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0 justify-content-md-end">
+                <li class="p-1"><a class="nav-link active text-muted" href="#">LembarAsa</a></li>
+                <li class="p-1"><a class="nav-link active text-muted" href="#">Forum</a></li>
+                <li class="p-1"><a class="nav-link active text-muted" href="#">Daftar Buku</a></li>
+                <li class="p-1"><a class="nav-link active text-muted" href="#">Peminjaman</a></li>
+                <li class="p-1"><a class="nav-link active text-muted" href="#">Reservasi</a></li>
+                {% if user.is_authenticated %}
+                <li class="p-1"><a class="nav-link active text-muted" href="{% url 'main:logout' %}">Logout</a></li>
+                {% else %}
+                <li class="p-1"><a class="nav-link active text-muted" href="{% url 'main:login' %}">Login</a></li>
+                <li class="p-1"><a class="nav-link active text-muted" href="{% url 'main:register' %}">Register</a></li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
 </nav>
