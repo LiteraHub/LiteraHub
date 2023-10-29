@@ -9,6 +9,7 @@
   margin-top: 1.5rem;
   right: -100%;
   background-color: #e2c171;
+  position: fixed;
 }
 
 .right-side.active {

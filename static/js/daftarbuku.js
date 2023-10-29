@@ -15,7 +15,8 @@ window.onscroll = function() {
     // Kembalikan properti ke nilai aslinya ketika scroll kurang dari 50
     document.querySelector(".right-side").style.position = "absolute";
     document.querySelector(".right-side").style.removeProperty("top") // Atur kembali ke nilai awal
-    document.querySelector(".right-side").style.marginTop = "1.5rem"; // Atur kembali ke nilai awal
+    document.querySelector(".right-side").style.marginTop = "1rem"; // Atur kembali ke nilai awal
+    document.querySelector(".right-side").style.bottom = 0; // Atur kembali ke nilai awal
   }
 };
 
@@ -26,7 +27,6 @@ card.forEach(card => {
     parentcard.classList.add('active');
     container.classList.add('active');
     let id = card.querySelector('#pkbuku').textContent;
-    // console.log(id);
     let title = card.querySelector('#title').textContent;
     $.ajax({
         method: 'GET',
@@ -40,7 +40,7 @@ card.forEach(card => {
             refreshReview(data);
         },
         error: function(error) {
-            alert('Error on fetching articles from server.')
+            alert('Error on fetching review from server.')
         },
     });
     document.getElementById("button_addreview").onclick = function(){
@@ -55,7 +55,6 @@ async function refreshReview(data){
     reviewbook.empty();
     for (let i = 1; i < data.length+1; i++) {
       let name = data[i].user.name;
-      console.log(name);
       let review = data[i].review;
       let created_at = data[i].created_at;
       reviewbook.append(`
@@ -72,13 +71,9 @@ async function refreshReview(data){
     let reviewbook = $('#reviewbook');
     reviewbook.empty();
     reviewbook.append(`
-        <div style="background-color: #f2eee3; margin-left: 2rem; margin-right: 2rem; height: 17rem; overflow: auto;" id="reviewbook">
-          <h6 style="margin-left: 0.5rem;">@NAMA ORANG<span style="margin-left: 10px;">haloo</span></h6>
-          <div style="background-color: #f2eee3; margin-left: 1.5rem; width: 90%;">
-              <p>Belum ada review
-              </p>
-          </div>
-        </div>
+            <div style="background-color: #f2eee3; margin-left: 2rem; margin-right: 2rem; height: 17rem; overflow: auto;" id="reviewbook">
+              <h6 style="margin-left: 0.5rem;">Belum ada review</h6>
+            </div>
   `);
   }
 }
@@ -111,10 +106,8 @@ closeightside.addEventListener('click', ()=>{
 })
 
 function addReview(id) {
-  console.log("id = " + id);
   reviewBody = $('#review_body').val();
   $('#review_body').val('');
-  console.log("id = " + id);
   $.ajax({
     method: 'POST',
     url: `/daftarbuku/post-book-review/${id}/`,
@@ -129,8 +122,7 @@ function addReview(id) {
       location.reload();
     },
     error: function(error) {
-      console.log("ini id di error = "+id)
-      alert('Error on posting comment to server.');
+      alert('Jangan lupa mengisi review.');
     },
   });
 }
