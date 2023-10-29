@@ -56,40 +56,6 @@ def add_thread(request):
     return HttpResponseNotFound()
 
 
-@login_required(login_url='/login')
-def writer(request):
-    threads = Thread.objects.filter(forum="penulis")
-    posts = Post.objects.all()
-    
-    context = {
-        'threads': threads,
-        'posts': posts,
-    }
-
-    return render(request, "forum_writers.html", context)
-
-@login_required(login_url='/login')
-def trending(request):
-    threads = Thread.objects.annotate(post_count=Count('post')).order_by('-post_count')
-    posts = Post.objects.all()
-    
-    context = {
-        'threads': threads,
-        'posts': posts,
-    }
-    return render(request, "forum_trending.html", context)
-
-@login_required(login_url='/login')
-def explore(request):
-    threads = Thread.objects.all()
-    posts = Post.objects.all()
-    
-    context = {
-        'threads': threads,
-        'posts': posts,
-    }
-    return render(request, "forum_explore.html", context)
-
 def to_thread(request):
     threads = Thread.objects.all()
     posts = Post.objects.all()

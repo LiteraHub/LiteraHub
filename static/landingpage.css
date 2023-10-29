@@ -67,7 +67,7 @@
     margin: 70px 30px;
     align-items: center;
     padding: 50px 0 50px 30px;
-    background-image: url("{% static 'img/landingpage.jpg' %}");
+    background-image: url("library_background.jpg");
 }
 
 #left-welcome {

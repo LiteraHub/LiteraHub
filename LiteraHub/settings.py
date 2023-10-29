@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "django_browser_reload",
-    'django_extensions'
+    'django_extensions',
     'main',
     'daftarbuku',
     'forum',
@@ -47,6 +47,10 @@ INSTALLED_APPS = [
     'peminjamanbuku',
     'reservasi',
     'buku',
+]
+
+EXTENSIONS = [
+    'django_extensions',
 ]
 
 MIDDLEWARE = [

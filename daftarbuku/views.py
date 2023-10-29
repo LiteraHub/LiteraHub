@@ -2,10 +2,10 @@ from django.shortcuts import render, get_object_or_404
 from buku.models import Buku
 from django.views.decorators.csrf import csrf_exempt
 from daftarbuku.models import Review
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound, JsonResponse
-from django.core import serializers
+from django.http import HttpResponse, JsonResponse
 from .forms import ReviewForm
 import datetime
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def search_books(request):
@@ -60,6 +60,7 @@ def choosebook(request):
     return JsonResponse(book_list, safe=False)
 
 
+@login_required(login_url='/login')
 @csrf_exempt
 def post_book_review(request, id):
     print(id)
