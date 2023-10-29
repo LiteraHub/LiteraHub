@@ -9,7 +9,6 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('buku', '0004_alter_buku_isbn'),
     ]
 
     operations = [
