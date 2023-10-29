@@ -41,10 +41,10 @@
     </div>
     <div class="links">
         <ul>
-            <li><a class="text-gray-800 hover:text-red-700" href="#">LembarAsa</a></li>
+            <li><a class="text-gray-800 hover:text-red-700" href="{% url 'lembarasa:show_lembarasa' %}">LembarAsa</a></li>
             <li><a class="text-gray-800 hover:text-red-700" href="#">Forum</a></li>
             <li><a class="text-gray-800 hover:text-red-700" href="#">Daftar Buku</a></li>
-            <li><a class="text-gray-800 hover:text-red-700" href="#">Peminjaman</a></li>
+            <li><a class="text-gray-800 hover:text-red-700" href="{% url 'peminjamanbuku:show_peminjaman' %}">Peminjaman</a></li>
             <li><a class="text-gray-800 hover:text-red-700" href="#">Reservasi</a></li>
             {% if user.is_authenticated %}
             <li><a class="text-gray-800 hover:text-red-700" href="{% url 'main:logout' %}">Logout</a></li>

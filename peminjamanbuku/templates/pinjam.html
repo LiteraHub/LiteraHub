@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %} 
+<title>PinjamBuku</title>
+{% endblock meta %}
+
+{% block content %}
+<div id="modal" class="fixed left-0 top-0 bg-black bg-opacity-50 w-screen h-screen flex justify-center items-center hidden">
+    <div id="inside" class="rounded shadow-md p-8 sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-2/5 2xl:w-1/3" style="background-color: #f6d9af; display: flex; flex-direction: column;">
+        <div>
+            <form id="pinjamForm">
+                {{form}}
+            </form>
+            <div class="text-center sm:text-right mb-4 mt-5" style="display: flex; justify-content: center;">
+                <button onclick="pinjamBuku()" id="pinjamButton" type="submit" class="bg-white border-[1px] border-gray-600 rounded px-4 py-2 text-black cursor-pointer hover:bg-blue-700" style="margin-bottom: 10px;">Pinjam</button>
+            </div>
+            <div class="text-center">
+                <button onclick="closeModal()" id="dialog" class="bg-white border-[1px] border-gray-600 rounded px-4 py-2 text-black cursor-pointer hover:bg-gray-600"> Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-dipinjam" class="fixed left-0 top-0 bg-black bg-opacity-50 w-screen h-screen flex justify-center items-center hidden">
+    <div id="informasi-dipinjam" class="rounded shadow-md p-8 sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-2/5 2xl:w-1/3" value1= "" style="background-color: #f6d9af; display: flex; 
+    flex-direction: column;">
+    </div>
+</div>
+
+
+<div class="text-center">
+    <div class="mt-2" style="margin-bottom: 30px; margin-top: 30px;">
+        <h1 class="text-3xl">
+            Peminjaman Buku
+        </h1>
+    </div>
+    <hr class="my-4" style="border-color: black; border-width: 2px;">
+    <div>
+        <h1 class="text-2xl" style="margin-top: 30px; margin-bottom: 5px;">
+            Buku Dipinjam 
+        </h1>
+        <h1 class="text-1xl" style="margin-bottom: 30px;">
+            <span class="italic"> Click</span> gambar untuk mengembalikan!
+        </h1>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 place-content-center" id="product_dipinjam"></div>
+    </div>
+    <hr class="my-4" style="border-color: black; border-width: 2px;">
+    <div>
+        <h1 class="text-2xl" style="margin-top: 30px; margin-bottom: 5px;">
+            Buku Tersedia
+        </h1>
+        <label for="searchInput">Cari Buku:</label>
+        <input type="text" id="searchInput" onkeyup="refreshItem()">
+        <h1 class="text-1xl" style="margin-bottom: 30px;">
+            <span class="italic"> Click</span> gambar untuk meminjam!
+        </h1>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 place-content-center" id="product_table"></div>
+        <br>
+        <div>
+            Sesi terakhir login: {{ last_login }}
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'pinjam.js' %}?{% now "U" %}"></script>
+{% endblock content %}
