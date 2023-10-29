@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from buku.models import Buku
 from lembarasa.models import MyBuku
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
@@ -18,7 +18,7 @@ def show_lembarasa(request):
     context = {
         'buku' : buku,
         'mybuku' : mybuku,
-        'user' : request.user.username,
+        'nama_user' : request.user.username,
         'form_buku' : form_buku,
         'form_mybuku' : form_mybuku,
     }
