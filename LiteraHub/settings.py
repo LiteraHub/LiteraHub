@@ -72,6 +72,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'LiteraHub.urls'
 
+CSRF_TRUSTED_ORIGINS = ["https://literahub-e08-tk.pbp.cs.ui.ac.id"]
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
