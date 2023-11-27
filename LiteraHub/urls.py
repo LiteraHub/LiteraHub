@@ -29,4 +29,5 @@ urlpatterns = [
     path('peminjamanbuku/', include('peminjamanbuku.urls')),
     path('reservasi/', include('reservasi.urls')),
     path('api/buku/', include('buku.urls')),   
+    path('auth/', include('authentication.urls')),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
