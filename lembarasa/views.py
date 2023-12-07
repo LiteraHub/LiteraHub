@@ -34,9 +34,10 @@ def show_json_mybuku(request):
     my_buku = MyBuku.objects.all()
     return HttpResponse(serializers.serialize("json", my_buku), content_type="application/json")
 
+@csrf_exempt
 def show_json_mybuku_user(request):
     my_buku = MyBuku.objects.filter(user=request.user)
-    return HttpResponse(serializers.serialize("json", my_buku), content_type="application/json")
+    return HttpResponse(serializers.serialize("json", my_buku))
 
 def get_buku_json(request):
     list_id_buku = MyBuku.objects.filter(user=request.user).values_list('buku') #list_idbuku
@@ -78,12 +79,6 @@ def delete_ajax(request, id):
 def create_buku_flutter(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        # title = data["title"]
-        # img = data["img"]
-        # isi = data["isi"]
-        # user = request.user
-        # year = datetime.datetime.today().year
-        print(data["isi"])
 
         new_buku = Buku.objects.create(
             isbn=0,
@@ -93,17 +88,11 @@ def create_buku_flutter(request):
             img=data["img"]
         )
 
-        # bisa
-        # print(new_buku)
-        
-
         new_mybuku = MyBuku.objects.create(
             buku=new_buku,
             user=request.user,
             isi=data["isi"]
         )
-
-        # new_mybuku.save()
 
         return JsonResponse({"status": "success"}, status=200)
     else:
