@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from buku.models import Buku
 from lembarasa.models import MyBuku
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 import datetime
 from lembarasa.forms import BukuForm, MyBukuForm
+import json
 
 @login_required(login_url='/login')
 def show_lembarasa(request):
@@ -31,6 +32,10 @@ def show_json_buku(request):
 
 def show_json_mybuku(request):
     my_buku = MyBuku.objects.all()
+    return HttpResponse(serializers.serialize("json", my_buku), content_type="application/json")
+
+def show_json_mybuku_user(request):
+    my_buku = MyBuku.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("json", my_buku), content_type="application/json")
 
 def get_buku_json(request):
@@ -68,3 +73,38 @@ def delete_ajax(request, id):
     mybuku.delete()
     buku_delete.delete()
     return HttpResponse(b"DELETED", status=201)
+
+@csrf_exempt
+def create_buku_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        # title = data["title"]
+        # img = data["img"]
+        # isi = data["isi"]
+        # user = request.user
+        # year = datetime.datetime.today().year
+        print(data["isi"])
+
+        new_buku = Buku.objects.create(
+            isbn=0,
+            title=data["title"],
+            author=request.user,
+            year=datetime.datetime.today().year,
+            img=data["img"]
+        )
+
+        # bisa
+        # print(new_buku)
+        
+
+        new_mybuku = MyBuku.objects.create(
+            buku=new_buku,
+            user=request.user,
+            isi=data["isi"]
+        )
+
+        # new_mybuku.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
