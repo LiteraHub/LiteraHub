@@ -30,6 +30,7 @@ def show_json_buku(request):
     buku = Buku.objects.all()
     return HttpResponse(serializers.serialize("json", buku), content_type="application/json")
 
+@csrf_exempt
 def show_json_mybuku(request):
     my_buku = MyBuku.objects.all()
     return HttpResponse(serializers.serialize("json", my_buku), content_type="application/json")
@@ -39,8 +40,15 @@ def show_json_mybuku_user(request):
     my_buku = MyBuku.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("json", my_buku))
 
+@csrf_exempt
 def get_buku_json(request):
     list_id_buku = MyBuku.objects.filter(user=request.user).values_list('buku') #list_idbuku
+    buku = Buku.objects.filter(id__in=list_id_buku)
+    return HttpResponse(serializers.serialize('json', buku))
+
+@csrf_exempt
+def get_semua_buku_json(request):
+    list_id_buku = MyBuku.objects.all().values_list('buku') #list_idbuku
     buku = Buku.objects.filter(id__in=list_id_buku)
     return HttpResponse(serializers.serialize('json', buku))
 
