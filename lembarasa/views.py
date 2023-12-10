@@ -105,3 +105,16 @@ def create_buku_flutter(request):
         return JsonResponse({"status": "success"}, status=200)
     else:
         return JsonResponse({"status": "error"}, status=401)
+
+@csrf_exempt
+def delete_buku_flutter(request):
+    data = json.loads(request.body)
+
+    buku_delete = Buku.objects.get(pk = data['id'])
+    mybuku = MyBuku.objects.get(buku = buku_delete)
+    mybuku.delete()
+    buku_delete.delete()
+
+    return JsonResponse({"status": "success"}, status=200)
+
+
