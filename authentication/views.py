@@ -57,7 +57,7 @@ def register(request):
     username = data['username']
     password = data['password']
     repassword = data['repassword']
-    print(username)
+    # print(username)
 
     if(password==repassword):
         try:
