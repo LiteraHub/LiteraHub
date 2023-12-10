@@ -1,13 +1,36 @@
+import json
 from django.shortcuts import render, get_object_or_404
 from buku.models import Buku
 from django.views.decorators.csrf import csrf_exempt
 from daftarbuku.models import Review
 from django.http import HttpResponse, JsonResponse
+from django.core import serializers
 from .forms import ReviewForm
 import datetime
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+def show_json(request):
+    data = Buku.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+def show_json_by_id(request, id):
+    data = Buku.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+def search_books_flutter(request):
+    data = json.loads(request.body)
+
+    try:
+        year = int(data["search"])
+        hasil_search = Buku.objects.filter(year__icontains=year)
+    except:
+        hasil_search = Buku.objects.filter(title__icontains=data["search"])
+        if not hasil_search.exists():
+            hasil_search = Buku.objects.filter(author__icontains=data["search"])
+    return HttpResponse(serializers.serialize("json", hasil_search), content_type="application/json")
+
+
 def search_books(request):
     title = request.GET.get('title', '')
     author = request.GET.get('author', '')
@@ -29,12 +52,9 @@ def search_books(request):
 
 
 def choosebook(request):
-    print("halo2")
     title = request.GET.get('title', '')
     id = request.GET.get('id', '')
-    print(id)
     books = Buku.objects.filter(title__icontains=title)
-    print(books)
     book = get_object_or_404(Buku, pk=id)
     review_list = Review.objects.filter(book=book)
     book_list = []
