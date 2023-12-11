@@ -104,11 +104,11 @@ def selesai(request, reservasi_id):
 @csrf_exempt
 def get_reservasi_json_flutter(request):
      data = json.loads(request.body)
-
+     
      user = get_object_or_404(User, username=data["user"])
      
      reservasi = Reservasi.objects.filter(user=user)
-     return JsonResponse(serializers.serialize('json', reservasi))
+     return HttpResponse(serializers.serialize('json', reservasi))
 
 @csrf_exempt
 def selesai_flutter(request):
@@ -143,7 +143,6 @@ def create_reservasi_flutter(request):
           # print(data)
           user= get_object_or_404(User, username=data["user"])
           # print(data["user"])
-
           buku = get_object_or_404(Buku, pk=int(data["buku"]))
           # if (buku.is_ready)
           buku.is_ready = False
