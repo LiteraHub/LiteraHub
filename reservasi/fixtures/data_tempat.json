@@ -1,0 +1,82 @@
+[
+    {
+      "pk": 1,
+      "model": "reservasi.tempatbaca",
+      "fields": {
+        "id_tempat": "1",
+        "dipesan": "False"
+      }
+    },
+    {
+         "pk": 2,
+         "model": "reservasi.tempatbaca",
+         "fields": {
+           "id_tempat": "2",
+           "dipesan": "False"
+         }
+    },
+    {
+         "pk": 3,
+         "model": "reservasi.tempatbaca",
+         "fields": {
+           "id_tempat": "3",
+           "dipesan": "False"
+         }
+    },
+    {
+         "pk": 4,
+         "model": "reservasi.tempatbaca",
+         "fields": {
+           "id_tempat": "4",
+           "dipesan": "False"
+         }
+    },
+    {
+         "pk": 5,
+         "model": "reservasi.tempatbaca",
+         "fields": {
+           "id_tempat": "5",
+           "dipesan": "False"
+         }
+    },
+    {
+         "pk": 6,
+         "model": "reservasi.tempatbaca",
+         "fields": {
+           "id_tempat": "6",
+           "dipesan": "False"
+         }
+    },
+    {
+         "pk": 7,
+         "model": "reservasi.tempatbaca",
+         "fields": {
+           "id_tempat": "7",
+           "dipesan": "False"
+         }
+    },
+    {
+         "pk": 8,
+         "model": "reservasi.tempatbaca",
+         "fields": {
+           "id_tempat": "8",
+           "dipesan": "False"
+         }
+    },
+    {
+         "pk": 9,
+         "model": "reservasi.tempatbaca",
+         "fields": {
+           "id_tempat": "9",
+           "dipesan": "False"
+         }
+    },
+    {
+         "pk": 10,
+         "model": "reservasi.tempatbaca",
+         "fields": {
+           "id_tempat": "10",
+           "dipesan": "False"
+         }
+    }
+]
