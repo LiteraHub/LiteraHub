@@ -5,3 +5,6 @@ psycopg2-binary
 requests
 urllib3
 django-browser-reload
+django_extensions
+django-environ
+django-cors-headers
