@@ -61,10 +61,7 @@ def choosebook(request):
     return JsonResponse(book_list, safe=False)
 
 
-<<<<<<< HEAD
 @login_required(login_url='/login')
-=======
->>>>>>> 6dcd09b358ebc9dcac7c707686172bb9d0686c4c
 @csrf_exempt
 def post_book_review(request, id):
     print(id)

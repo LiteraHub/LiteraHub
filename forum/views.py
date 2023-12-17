@@ -84,17 +84,23 @@ def add_post(request, id):
 #add threads in the flutter app
 @login_required(login_url='/login')
 def add_thread_flutter(request):
-    if request.method == 'POST':
-        
+    if request.method == "POST":
         data = json.loads(request.body)
-
+        id = data.get('buku')
+        buku = None
+        if (id != 'null'):
+            buku = Buku.objects.get(pk=id)
+        else:
+            buku = Buku.objects.get(pk=id)
+            print("default book")
+            
         new_thread = Thread.objects.create(
-            user = request.user,
-            name = data["name"],
-            buku = data["buku"],
-            date = data["date"]
+            user=request.user,
+            name=data["name"],
+            buku=buku,
+            date=data["date"]
         )
-
+        
         new_thread.save()
 
         return JsonResponse({"status": "success"}, status=200)
@@ -102,7 +108,7 @@ def add_thread_flutter(request):
         return JsonResponse({"status": "error"}, status=401)
 
 #add posts in the flutter app
-def add_post_flutter(request, id):
+def add_post_flutter(request):
     thread = Thread.objects.get(pk=id)
     if request.method == 'POST':
         
@@ -134,4 +140,14 @@ def get_json_posts(request, id):
 #To get the json of the books
 def get_json_buku(request):
     data = Buku.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+#get buku by title
+def get_buku_by_title(request, title):
+    data = Buku.objects.filter(title=title)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+#get buku by pk
+def get_buku_by_id(request, id):
+    data = Buku.objects.filter(pk=id)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
