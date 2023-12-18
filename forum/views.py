@@ -153,4 +153,4 @@ def get_buku_by_title(request, title):
 #get buku by pk
 def get_buku_by_id(request, id):
     data = Buku.objects.get(pk=id)
-    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+    return HttpResponse(serializers.serialize("json", [data]), content_type="application/json")
