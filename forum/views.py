@@ -1,5 +1,6 @@
+import json
 from django.shortcuts import render
-from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse, JsonResponse
 import datetime
 from django.db.models import Count
 from django.contrib.auth.decorators import login_required
@@ -8,79 +9,148 @@ from django.views.decorators.csrf import csrf_exempt
 from forum.models import Thread, Post
 from buku.models import Buku
 
+# def show_threads to show all the threads. Main page of forum
 def show_forum(request):
-    threads = Thread.objects.filter(forum="recommend")
-    posts = Post.objects.all()
+    threads = Thread.objects.all().order_by('-date')
+    books = Buku.objects.all().order_by('title')
     
     context = {
         'threads': threads,
-        'posts': posts,
+        'books': books,
     }
+    return render(request, 'forum.html', context)
+    
 
-    return render(request, "forum.html", context)
+#def show_posts to show all the posts of a thread
+def show_posts(request, id):
+    posts = Post.objects.filter(pk=id).order_by('date')
+    
+    context = {
+        'posts': posts
+    }
+    return render(request, 'threads.html', context)
 
+# To add a new thread in the website
 @login_required(login_url='/login')
-@csrf_exempt
-def add_post(request):
-    if request.method == 'POST':
-        thread = request.thread
+def add_thread(request):
+    if request.method == "POST":
+        user = request.user
+        name = request.POST.get("name")
+        buku = request.POST.get("buku")
+        date = str(datetime.datetime.now())
+        
+        new_thread = Thread.objects.create(
+                user=user,
+                name=name,
+                buku=buku,
+                date=date
+            )
+        
+        result = {
+            'pk':new_thread.pk,
+            'user':new_thread.user.username,
+            'name':new_thread.name,
+            'buku':new_thread.buku,
+            'date':new_thread.date.date()
+        }
+        return JsonResponse(result, status=200)
+    return render(request, "forum.html")
+
+# add posts to a thread in the website
+@login_required(login_url='/login')
+def add_post(request, id):
+    thread = Thread.objects.get(pk=id)
+    if request.method == "POST":
+        user = request.user
         body = request.POST.get("body")
         date = str(datetime.datetime.now())
-        user = request.user
+        
+        new_post = Post.objects.create(
+                user=user,
+                body=body,
+                thread = thread,
+                date=date
+            )
+        
+        result = {
+            'pk':new_post.pk,
+            'user':new_post.user.username,
+            'body':new_post.body,
+            'date':new_post.date.date()
+        }
+        return JsonResponse(result, status=200)
+    return render(request, "threads.html")
 
-        new_post = Post(body=body, thread=thread, date=date, user=user)
-        new_post.save()
-
-        return HttpResponse(b"CREATED", status=201)
-    return HttpResponseNotFound()
+#add threads in the flutter app
 
 @login_required(login_url='/login')
 @csrf_exempt
-def add_thread(request):
-    if request.method == 'POST':
-        author = request.user
-        forum = request.POST.get("forum")
-        name = request.POST.get("name")
-        date = str(datetime.datetime.now())
-        buku_title = request.POST.get("buku")
+def add_thread_flutter(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        title = data.get('buku')
+        buku = None
+        if (title != 'null'):
+            try:
+                buku = Buku.objects.get(title=title)
+            except:
+                buku = None #buku tidak ada
+        else:
+            buku = None #tidak pilih buku
+            
+        new_thread = Thread.objects.create(
+            user=request.user,
+            name=data["name"],
+            buku=buku,
+            date=data["date"]
+        )
         
-        try:
-            buku = Buku.objects.get(title=buku_title)
-        except Buku.DoesNotExist:
-            buku = None
-
-        new_thread = Thread(author=author, name=name, forum=forum, date=date, buku=buku)
         new_thread.save()
 
-        return HttpResponse(b"CREATED", status=201)
-    return HttpResponseNotFound()
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
+        
+#add posts in the flutter app
+def add_post_flutter(request):
+    if request.method == 'POST':
+        
+        data = json.loads(request.body)
 
+        new_post = Post.objects.create(
+            user = request.user,
+            body = data["body"],
+            thread = thread,
+            date = data["date"]
+        )
 
-def to_thread(request):
-    threads = Thread.objects.all()
-    posts = Post.objects.all()
+        new_post.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
     
-    context = {
-        'threads': threads,
-        'posts': posts,
-    }
-    return render(request, "threads.html", context)
+#To get the json of the threads
+def get_json_threads(request):
+    data = Thread.objects.all().order_by('-date')
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+    
+#To get the json of the posts
+def get_json_posts(request, id):
+    data = Post.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+    
+#To get the json of the books
+def get_json_buku(request):
+    data = Buku.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
-def get_threads(request):
-    threads = Thread.objects.all()
-    return HttpResponse(serializers.serialize('json', threads))
+#get buku by title
+def get_buku_by_title(request, title):
+    data = Buku.objects.get(title=title)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
-def get_post(request):
-    posts = Post.objects.all()
-    return HttpResponse(serializers.serialize('json', posts))
-
-def get_books_json(request):
-    books = Buku.objects.all()
-    return HttpResponse(serializers.serialize('json', books), content_type="application/json")
-
-def get_buku_title(request, judul):
-    buku = Buku.objects.filter(title=judul).values_list('buku')
-    return HttpResponse(serializers.serialize('json', buku))
-
-def get_time(request):
-    return str(datetime.datetime.now())
+#get buku by pk
+def get_buku_by_id(request, id):
+    data = Buku.objects.get(pk=id)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")

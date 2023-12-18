@@ -1,9 +1,9 @@
 async function getBuku() {
-    return fetch("/forum/get_books_json").then((res) => res.json())
+    return fetch("/forum/json_buku/").then((res) => res.json());
 }
 
 async function getThreads() {
-    return fetch("/forum/get_threads").then((res) => res.json())
+    return fetch("/forum/json_thread/").then((res) => res.json());
 }
 
 async function refreshThreads() {
@@ -13,57 +13,57 @@ async function refreshThreads() {
     threads.forEach((thread) => {
         htmlString += `
             <div class="thread-panel">
-            <img src="${thread.book_cover}" alt="Book Cover">
-            <p><a href="/forum/threads">${thread.fields.name}</a></p>
-            <p>${thread.fields.author}</p>
-            <p>${thread.fields.post_amount}</p>
-            <p>${thread.fields.last_post}</p>
-        </div>
-        
+                <img src="${thread.fields.img}" alt="Book Cover">
+                <p><a href="/forum/posts/${thread.pk}">${thread.fields.name}</a></p>
+                <p>${thread.post_amount}</p>
+                <p>${thread.last_post}</p>
             </div>
         `;
     });
     document.getElementById("forum-forum").innerHTML = htmlString;
 }
-refreshThreads()
 
 function addThread() {
-    fetch("/forum/add_thread", {
+    fetch("/forum/add_thread/", {
         method: "POST",
         body: new FormData(document.querySelector('#thread-form'))
-    }).then(refreshThreads)
+    }).then(refreshThreads);
 
-    document.getElementById("thread-form").reset()
-    return false
+    document.getElementById("thread-form").reset();
+    return false;
 }
 
-async function getPosts() {
-    return fetch("/forum/get_post").then((res) => res.json())
+async function getPosts(id) {
+    return fetch(`/forum/json_posts/${id}/`).then((res) => res.json());
 }
 
-async function refreshPosts() {
+async function refreshPosts(id) {
     document.getElementById("post-post").innerHTML = "";
-    const posts = await getPosts();
+    const posts = await getPosts(id);
     let htmlString = "";
     posts.forEach((post) => {
         htmlString += `
             <div class="post-box">
                 <p>${post.fields.user}</p>
                 <p>${post.fields.body}</p>
-                <p>"{{ thread.book_cover }}"</p>
             </div>
         `;
     });
     document.getElementById("post-post").innerHTML = htmlString;
 }
-refreshPosts()
 
 function addPost() {
-    fetch("/forum/add_post", {
+    const searchParams = new URLSearchParams(window.location.search);
+    const threadId = searchParams.get('id');
+
+    fetch(`/forum/add_post_flutter/${id}/`, {
         method: "POST",
         body: new FormData(document.querySelector('#post-form'))
-    }).then(refreshPosts)
+    }).then(refreshPosts(id));
 
-    document.getElementById("post-form").reset()
-    return false
+    document.getElementById("post-form").reset();
+    return false;
 }
+
+// Initial load
+refreshThreads();
