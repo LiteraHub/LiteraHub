@@ -11,7 +11,7 @@ from buku.models import Buku
 
 # def show_threads to show all the threads. Main page of forum
 def show_forum(request):
-    threads = Thread.objects.all().order_by('date')
+    threads = Thread.objects.all().order_by('-date')
     books = Buku.objects.all().order_by('title')
     
     context = {
@@ -82,17 +82,21 @@ def add_post(request, id):
     return render(request, "threads.html")
 
 #add threads in the flutter app
+
 @login_required(login_url='/login')
+@csrf_exempt
 def add_thread_flutter(request):
     if request.method == "POST":
         data = json.loads(request.body)
-        id = data.get('buku')
+        title = data.get('buku')
         buku = None
-        if (id != 'null'):
-            buku = Buku.objects.get(pk=id)
+        if (title != 'null'):
+            try:
+                buku = Buku.objects.get(title=title)
+            except:
+                buku = None #buku tidak ada
         else:
-            buku = Buku.objects.get(pk=id)
-            print("default book")
+            buku = None #tidak pilih buku
             
         new_thread = Thread.objects.create(
             user=request.user,
@@ -106,10 +110,9 @@ def add_thread_flutter(request):
         return JsonResponse({"status": "success"}, status=200)
     else:
         return JsonResponse({"status": "error"}, status=401)
-
+        
 #add posts in the flutter app
 def add_post_flutter(request):
-    thread = Thread.objects.get(pk=id)
     if request.method == 'POST':
         
         data = json.loads(request.body)
@@ -129,7 +132,7 @@ def add_post_flutter(request):
     
 #To get the json of the threads
 def get_json_threads(request):
-    data = Thread.objects.all()
+    data = Thread.objects.all().order_by('-date')
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
     
 #To get the json of the posts
@@ -144,10 +147,10 @@ def get_json_buku(request):
 
 #get buku by title
 def get_buku_by_title(request, title):
-    data = Buku.objects.filter(title=title)
+    data = Buku.objects.get(title=title)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 #get buku by pk
 def get_buku_by_id(request, id):
-    data = Buku.objects.filter(pk=id)
+    data = Buku.objects.get(pk=id)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
