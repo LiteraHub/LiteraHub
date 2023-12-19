@@ -8,6 +8,7 @@ from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 from forum.models import Thread, Post
 from buku.models import Buku
+from django.contrib.auth.models import User
 
 # def show_threads to show all the threads. Main page of forum
 def show_forum(request):
@@ -113,14 +114,16 @@ def add_thread_flutter(request):
 
 @login_required(login_url='/login')
 @csrf_exempt
-def add_post_flutter(request, id):
+def add_post_flutter(request):
     if request.method == 'POST':
         data = json.loads(request.body)
+        thread_id = data.get('thread')
+        thread = Thread.objects.get(pk=thread_id)
 
         new_post = Post.objects.create(
             user=request.user,
             body=data["body"],
-            thread=data["thread"],
+            thread=thread,
             date=data["date"]
         )
 
@@ -137,8 +140,8 @@ def get_json_threads(request):
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
     
 #To get the json of the posts
-def get_json_posts(request, thread):
-    data = Post.objects.filter(thread=thread).order_by('-date')
+def get_json_posts(request, id):
+    data = Post.objects.filter(thread=id).order_by('-date')
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
     
 #To get the json of the books
@@ -160,3 +163,10 @@ def get_buku_by_id(request, id):
 def get_all_posts(request):
     data = Post.objects.all().order_by('-date')
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+#mapping usernames to ids
+def get_usernames(request):
+    users = User.objects.all()
+    user_mapping = {user.id: user.username for user in users}
+
+    return JsonResponse({'user_mapping': user_mapping})
