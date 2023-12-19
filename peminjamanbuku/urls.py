@@ -11,4 +11,6 @@ urlpatterns = [
         path('get-buku-by-id/<int:id>/', get_buku_by_id, name='get_buku_by_id'),
         path('kembalikan-buku/<int:id>/', kembalikan_buku, name='kembalikan_buku'),
         path('get-objek-by-id/<int:id>/', get_objek_by_id, name='get_objek_by_id'),
+        path('pinjam_buku_flutter/', pinjam_buku_flutter, name='pinjam_buku_flutter'),
+        path('kembalikan-buku-flutter/<int:id>/', kembalikan_buku_flutter, name='kembalikan-buku-flutter')
 ]

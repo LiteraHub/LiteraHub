@@ -1,11 +1,12 @@
 from datetime import datetime
+import json
 from django.shortcuts import render
 from buku.models import Buku
 from peminjamanbuku.models import PeminjamanBuku
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from peminjamanbuku.forms import PinjamForm
 
@@ -36,7 +37,7 @@ def pinjam_buku(request):
         if (bukus.exists):
             for book in bukus:
                 gambar = book.img
-                book.is_ready = False;
+                book.is_ready = False
                 book.save()
 
         user = request.user
@@ -67,6 +68,49 @@ def kembalikan_buku(request, id):
         return HttpResponse(b"DIHAPUS", status = 201)
     return HttpResponseNotFound()    
 
+@csrf_exempt
+def kembalikan_buku_flutter(request, id):
+    if request.method == 'POST':
+        bukuDikembalikan = Buku.objects.get(pk=id)
+        bukuDikembalikan.is_ready = True
+        bukuDikembalikan.save()
+        objekPeminjaman = PeminjamanBuku.objects.filter(buku=bukuDikembalikan).filter(user=request.user)
+        objekPeminjaman.first().delete()
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
+
+@csrf_exempt
+def pinjam_buku_flutter(request):
+    if request.method == 'POST':
+
+        user = request.user
+        data = json.loads(request.body)
+        name = data["name"]
+        tanggal = data["tanggal"]
+        judul = data["judul"]
+        buku = Buku.objects.filter(title=judul)
+
+        if (buku.exists):
+            for book in buku:
+                gambar = book.img
+                book.is_ready = False
+                book.save()
+
+        new_peminjaman = PeminjamanBuku.objects.create(
+            user = user,
+            gambarBuku = gambar,
+            buku = buku.first(),
+            nama= name,
+            tanggal_pengembalian = tanggal,
+            is_dikembalikan = False,
+            title = buku.first().title,
+        )
+        new_peminjaman.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
 
 def get_pinjam_json(request):
     dataPinjam = PeminjamanBuku.objects.filter(user=request.user).filter(is_dikembalikan=False)

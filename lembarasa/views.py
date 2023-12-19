@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from buku.models import Buku
 from lembarasa.models import MyBuku
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 import datetime
 from lembarasa.forms import BukuForm, MyBukuForm
+import json
 
 @login_required(login_url='/login')
 def show_lembarasa(request):
@@ -29,12 +30,25 @@ def show_json_buku(request):
     buku = Buku.objects.all()
     return HttpResponse(serializers.serialize("json", buku), content_type="application/json")
 
+@csrf_exempt
 def show_json_mybuku(request):
     my_buku = MyBuku.objects.all()
     return HttpResponse(serializers.serialize("json", my_buku), content_type="application/json")
 
+@csrf_exempt
+def show_json_mybuku_user(request):
+    my_buku = MyBuku.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize("json", my_buku))
+
+@csrf_exempt
 def get_buku_json(request):
     list_id_buku = MyBuku.objects.filter(user=request.user).values_list('buku') #list_idbuku
+    buku = Buku.objects.filter(id__in=list_id_buku)
+    return HttpResponse(serializers.serialize('json', buku))
+
+@csrf_exempt
+def get_semua_buku_json(request):
+    list_id_buku = MyBuku.objects.all().values_list('buku') #list_idbuku
     buku = Buku.objects.filter(id__in=list_id_buku)
     return HttpResponse(serializers.serialize('json', buku))
 
@@ -68,3 +82,39 @@ def delete_ajax(request, id):
     mybuku.delete()
     buku_delete.delete()
     return HttpResponse(b"DELETED", status=201)
+
+@csrf_exempt
+def create_buku_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+
+        new_buku = Buku.objects.create(
+            isbn=0,
+            title=data["title"],
+            author=request.user,
+            year=datetime.datetime.today().year,
+            img=data["img"]
+        )
+
+        new_mybuku = MyBuku.objects.create(
+            buku=new_buku,
+            user=request.user,
+            isi=data["isi"]
+        )
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
+
+@csrf_exempt
+def delete_buku_flutter(request):
+    data = json.loads(request.body)
+
+    buku_delete = Buku.objects.get(pk = data['id'])
+    mybuku = MyBuku.objects.get(buku = buku_delete)
+    mybuku.delete()
+    buku_delete.delete()
+
+    return JsonResponse({"status": "success"}, status=200)
+
+
