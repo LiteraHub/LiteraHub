@@ -58,7 +58,6 @@ INSTALLED_APPS = [
     'buku',
     'authentication',
     'corsheaders',
-    'rest_framework',
 ]
 
 EXTENSIONS = [

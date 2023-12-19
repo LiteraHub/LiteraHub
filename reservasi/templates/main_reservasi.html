@@ -271,7 +271,7 @@
                <th>Pukul</th>
                <th>Durasi (Jam)</th>
                <th>Buku (ID)</th>
-               <th>Tempat Baca</th>
+               <th>Tempat Baca (ID)</th>
                <th>Status</th>
                <th></th>
           </tr>`
@@ -298,6 +298,55 @@
      refreshReservasi()
 
      function buatReservasi() {
+          // Validasi Nama
+          var namaInput = document.getElementById("nama").value;
+          if (namaInput.trim() === "" || !isNaN(namaInput)) {
+               alert("Nama tidak boleh kosong dan berupa huruf");
+               return;
+          }
+
+          // Validasi Nomor Ponsel
+          var noHpInput = document.getElementById("no_hp").value;
+          if (noHpInput.trim() === "" || isNaN(noHpInput)) {
+               alert("Nomor Ponsel tidak boleh kosong dan berupa angka");
+               return;
+          }
+
+          // Validasi Tanggal
+          var tanggalInput = document.getElementById("tanggal").value;
+          if (tanggalInput === "") {
+               alert("Tanggal tidak boleh kosong");
+               return;
+          }
+
+          // Validasi Jam
+          var jamInput = document.getElementById("jam").value;
+          if (jamInput === "") {
+               alert("Jam tidak boleh kosong");
+               return;
+          }
+
+          // Validasi Durasi
+          var durasiInput = document.querySelector('input[name="durasi_baca"]:checked');
+          if (!durasiInput) {
+               alert("Pilih durasi baca");
+               return;
+          }
+
+          // Validasi Tempat Baca
+          var tempatBacaInput = document.getElementById("select-tempat").value;
+          if (tempatBacaInput === "") {
+               alert("Pilih tempat baca");
+               return;
+          }
+
+          // Validasi Pilihan Buku
+          var bukuInput = document.getElementById("select-buku").value;
+          if (bukuInput === "") {
+               alert("Pilih Buku");
+               return;
+          }
+
           fetch("{% url 'reservasi:buat_reservasi' %}", {
                method: "POST",
                body: new FormData(document.querySelector('#form'))

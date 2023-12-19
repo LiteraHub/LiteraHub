@@ -1,5 +1,5 @@
 import json
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse, JsonResponse
 import datetime
 from django.db.models import Count
@@ -8,6 +8,7 @@ from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 from forum.models import Thread, Post
 from buku.models import Buku
+from django.contrib.auth.models import User
 
 # def show_threads to show all the threads. Main page of forum
 def show_forum(request):
@@ -82,7 +83,6 @@ def add_post(request, id):
     return render(request, "threads.html")
 
 #add threads in the flutter app
-
 @login_required(login_url='/login')
 @csrf_exempt
 def add_thread_flutter(request):
@@ -110,25 +110,31 @@ def add_thread_flutter(request):
         return JsonResponse({"status": "success"}, status=200)
     else:
         return JsonResponse({"status": "error"}, status=401)
-        
-#add posts in the flutter app
+
+@login_required(login_url='/login')
+@csrf_exempt
 def add_post_flutter(request):
     if request.method == 'POST':
-        
-        data = json.loads(request.body)
+        try:
+            data = json.loads(request.body)
+            thread_id = data.get('thread')
+            thread = Thread.objects.get(pk=thread_id)
 
-        new_post = Post.objects.create(
-            user = request.user,
-            body = data["body"],
-            thread = thread,
-            date = data["date"]
-        )
+            new_post = Post.objects.create(
+                user=request.user,
+                body=data["body"],
+                thread=thread,
+                date=data["date"]
+            )
 
-        new_post.save()
+            new_post.save()
 
-        return JsonResponse({"status": "success"}, status=200)
+            return JsonResponse({"status": "success"}, status=200)
+        except Exception as e:
+            return JsonResponse({"status": "error", "error": str(e)}, status=500)
     else:
-        return JsonResponse({"status": "error"}, status=401)
+        return JsonResponse({"status": "error", "message": "Invalid method"}, status=401)
+
     
 #To get the json of the threads
 def get_json_threads(request):
@@ -137,7 +143,7 @@ def get_json_threads(request):
     
 #To get the json of the posts
 def get_json_posts(request, id):
-    data = Post.objects.filter(pk=id)
+    data = Post.objects.filter(thread=id).order_by('-date')
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
     
 #To get the json of the books
@@ -147,10 +153,22 @@ def get_json_buku(request):
 
 #get buku by title
 def get_buku_by_title(request, title):
-    data = Buku.objects.get(title=title)
+    data = Buku.objects.filter(title=title)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 #get buku by pk
 def get_buku_by_id(request, id):
-    data = Buku.objects.get(pk=id)
-    return HttpResponse(serializers.serialize("json", [data]), content_type="application/json")
+    data = Buku.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+#chek posts
+def get_all_posts(request):
+    data = Post.objects.all().order_by('-date')
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+#mapping usernames to ids
+def get_usernames(request):
+    users = User.objects.all()
+    user_mapping = {user.id: user.username for user in users}
+
+    return JsonResponse({'user_mapping': user_mapping})
