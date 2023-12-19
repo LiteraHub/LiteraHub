@@ -83,7 +83,6 @@ def add_post(request, id):
     return render(request, "threads.html")
 
 #add threads in the flutter app
-
 @login_required(login_url='/login')
 @csrf_exempt
 def add_thread_flutter(request):
@@ -116,22 +115,25 @@ def add_thread_flutter(request):
 @csrf_exempt
 def add_post_flutter(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
-        thread_id = data.get('thread')
-        thread = Thread.objects.get(pk=thread_id)
+        try:
+            data = json.loads(request.body)
+            thread_id = data.get('thread')
+            thread = Thread.objects.get(pk=thread_id)
 
-        new_post = Post.objects.create(
-            user=request.user,
-            body=data["body"],
-            thread=thread,
-            date=data["date"]
-        )
+            new_post = Post.objects.create(
+                user=request.user,
+                body=data["body"],
+                thread=thread,
+                date=data["date"]
+            )
 
-        new_post.save()
+            new_post.save()
 
-        return JsonResponse({"status": "success"}, status=200)
+            return JsonResponse({"status": "success"}, status=200)
+        except Exception as e:
+            return JsonResponse({"status": "error", "error": str(e)}, status=500)
     else:
-        return JsonResponse({"status": "error"}, status=401)
+        return JsonResponse({"status": "error", "message": "Invalid method"}, status=401)
 
     
 #To get the json of the threads
