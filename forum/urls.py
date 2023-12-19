@@ -16,4 +16,6 @@ urlpatterns = [
     path('json_buku/', views.get_json_buku, name='get_json_buku'),
     path('buku_title/<str:title>/', views.get_buku_by_title, name='get_buku_by_title'),
     path('buku_id/<int:id>/', views.get_buku_by_id, name='get_buku_by_id'),
+    path('json_posts/', views.get_all_posts, name='get_all_posts'),
+    path('usernames/', views.get_usernames, name='get_usernames'),
 ]
