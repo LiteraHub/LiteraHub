@@ -11,3 +11,4 @@ class Review(models.Model):
     review = models.TextField()
     created_at = models.DateTimeField(default=timezone.now)
     book = models.ForeignKey(Buku, on_delete=models.CASCADE)
+    username = models.CharField(max_length=255, null=True)

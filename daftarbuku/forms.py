@@ -6,7 +6,7 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ['review']
-        exclude = ['user', 'book', 'created_at']
+        exclude = ['user', 'book', 'created_at', 'username']
 
     review = forms.CharField(
         label='',
