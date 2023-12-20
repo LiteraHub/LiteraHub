@@ -11,6 +11,6 @@ def get_books(request):
 def replace_img(request):
     data = Buku.objects.all()
     for buku in data:
-        buku.img = buku.img.replace("http", "https").replace("images.", "m.media-")
+        buku.img = buku.img.replace("httpss", "https")
         buku.save(update_fields=["img"])
     return JsonResponse({"status": "success"}, status=200)
